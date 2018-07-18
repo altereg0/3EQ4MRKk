@@ -8,20 +8,20 @@ with open('README.rst') as f:
 
 setup(
     name='falcon-example',
-    version='1.0.0',
+    version='0.1.0',
     description=('Example '),
     long_description=desc,
-    url='https://github.com/jmvrbanac/falcon-example',
-    author='John Vrbanac',
-    author_email='john.vrbanac@linux.com',
+    url='https://github.com/altereg0/3EQ4MRKk.git',
+    author='alter',
+    author_email='alter@example.com',
     license='Apache v2',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
 
     keywords='',
