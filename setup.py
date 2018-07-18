@@ -3,6 +3,7 @@ import io
 import os
 import sys
 from shutil import rmtree
+# In Python 3.3+, setuptools also provides the find_packages_ns variant of find_packages, which has the same function signature as find_packages, but works with PEP 420 compliant implicit namespace packages.
 from setuptools import setup, find_packages
 
 # Package meta-data.
@@ -77,7 +78,12 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
     ],
-    package_data={},
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        # '': ['*.txt', '*.rst'],
+        # And include any *.msg files found in the 'hello' package, too:
+        # 'hello': ['*.msg'],
+    },
     data_files=[],
     # entry_points={
     #     'console_scripts': ['mycli=mymodule:cli'],
