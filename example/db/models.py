@@ -42,7 +42,7 @@ class UserModel(SAModel):
         return models
 
 
-class MesageModel(SAModel):
+class MessageModel(SAModel):
     __tablename__ = 'messages'
 
     id = sa.Column(sa.Integer, primary_key=True)

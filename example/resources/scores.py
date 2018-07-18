@@ -8,7 +8,6 @@ from example.db import models
 from example.resources import BaseResource
 from example.schemas import load_schema
 
-
 class ScoresResource(BaseResource):
     def on_get(self, req, resp):
         model_list = models.UserModel.get_list(self.db.session)
@@ -24,7 +23,7 @@ class ScoresResource(BaseResource):
     def on_post(self, req, resp):
         model = models.UserModel(
             username=req.media.get('username'),
-            company=req.media.get('company'),
+            provider=req.media.get('provider'),
             score=req.media.get('score')
         )
 

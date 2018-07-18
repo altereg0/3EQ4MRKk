@@ -5,7 +5,7 @@ import aumbry
 from falcon import testing
 # import testing.mysqld
 
-from example.app import MyService
+from example.app import AlterService
 from example.config import AppConfig
 
 from falcon import testing
@@ -31,7 +31,7 @@ class AppTestCase(testing.TestCase):
             }
         )
         # self.app = TestApp(cfg, MyService)
-        self.app = MyService(cfg)
+        self.app = AlterService(cfg)
 
     def tearDown(self):
         # self.mysqld.stop()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from app.socialoauth.sites.base import OAuth2
+from example.socialoauth.sites.base import OAuth2
 
 
 class Github(OAuth2):

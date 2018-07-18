@@ -2,7 +2,7 @@
 from time import sleep
 import falcon
 import json
-from example.db.models import MessageModel, MessageEntitySchema
+from example.db.models import MessageModel
 
 
 class MessageCollectionResource(object):

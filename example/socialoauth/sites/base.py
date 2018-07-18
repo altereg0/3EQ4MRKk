@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import json
+from urllib import request
 from urllib.parse import urlencode, quote_plus
-from urllib import request, error
+
 from functools import wraps
 
-from app.socialoauth import SocialAPIError, SocialSitesConfigError
-from app.socialoauth import SocialSites
+from example.socialoauth.exception import SocialAPIError, SocialSitesConfigError
+from example.socialoauth import SocialSites
 
 HTTP_TIMEOUT = 10
 
@@ -20,16 +21,17 @@ def _http_error_handler(func):
     def deco(self, *args, **kwargs):
         try:
             res = func(self, *args, **kwargs)
-        except error.HTTPError as e:
+        except request.HTTPError as e:
             raise SocialAPIError(self.site_name, e.url, e.read())
-        except error.URLError as e:
+        except request.URLError as e:
             raise SocialAPIError(self.site_name, args[0], e.reason)
-        
+
         error_key = getattr(self, 'RESPONSE_ERROR_KEY', None)
         if error_key is not None and error_key in res:
             raise SocialAPIError(self.site_name, args[0], res)
-        
+
         return res
+
     return deco
 
 
@@ -64,7 +66,7 @@ class OAuth2(object):
     def __init__(self):
         """Get config from settings.
         class instance will have the following properties:
-        
+
         site_name
         site_id
         REDIRECT_URI
@@ -73,35 +75,30 @@ class OAuth2(object):
         """
         key = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)
         configs = socialsites.load_config(key)
-        for k, v in configs.items():
+        for k, v in configs.iteritems():
             setattr(self, k, v)
-
 
     @_http_error_handler
     def http_get(self, url, data, parse=True):
-        req = request.Request('%s?%s' % (url, urlencode(data).encode()))
+        req = request.Request('%s?%s' % (url, urlencode(data)))
         self.http_add_header(req)
         res = request.urlopen(req, timeout=HTTP_TIMEOUT).read()
         if parse:
-            return json.loads(res.decode())
+            return json.loads(res)
         return res
-
 
     @_http_error_handler
     def http_post(self, url, data, parse=True):
-        req = request.Request(url, data=urlencode(data).encode())
+        req = request.Request(url, data=urlencode(data))
         self.http_add_header(req)
         res = request.urlopen(req, timeout=HTTP_TIMEOUT).read()
         if parse:
-            return json.loads(res.decode())
+            return json.loads(res)
         return res
-
 
     def http_add_header(self, req):
         """Sub class rewiter this function If it's necessary to add headers"""
         pass
-
-
 
     @property
     def authorize_url(self):
@@ -117,7 +114,7 @@ class OAuth2(object):
         """
 
         url = "%s?client_id=%s&response_type=code&redirect_uri=%s" % (
-            self.AUTHORIZE_URL, self.CLIENT_ID, quote_plus(self.REDIRECT_URI)
+            self.AUTHORIZE_URL, self.CLIENT_ID,  quote_plus(self.REDIRECT_URI)
         )
 
         if getattr(self, 'SCOPE', None) is not None:
@@ -125,9 +122,8 @@ class OAuth2(object):
 
         return url
 
-
     def get_access_token(self, code, method='POST', parse=True):
-        """parse is True means that the api return a json string. 
+        """parse is True means that the api return a json string.
         So, the result will be parsed by json library.
         Most sites will follow this rule, return a json string.
         But some sites (e.g. Tencent), Will return an non json string,
@@ -146,14 +142,12 @@ class OAuth2(object):
             'grant_type': 'authorization_code'
         }
 
-
         if method == 'POST':
             res = self.http_post(self.ACCESS_TOKEN_URL, data, parse=parse)
         else:
             res = self.http_get(self.ACCESS_TOKEN_URL, data, parse=parse)
 
         self.parse_token_response(res)
-
 
     def api_call_get(self, url=None, **kwargs):
         url = self.build_api_url(url)
@@ -164,7 +158,6 @@ class OAuth2(object):
         url = self.build_api_url(url)
         data = self.build_api_data(**kwargs)
         return self.http_post(url, data)
-
 
     def parse_token_response(self, res):
         """
@@ -178,11 +171,8 @@ class OAuth2(object):
         """
         raise NotImplementedError()
 
-
     def build_api_url(self, url):
         raise NotImplementedError()
 
-
     def build_api_data(self, **kwargs):
         raise NotImplementedError()
-

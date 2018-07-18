@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .exception import SocialSitesConfigError, SocialAPIError
-from .utils import import_oauth_class
+from example.socialoauth.exception import SocialSitesConfigError, SocialAPIError
+from example.socialoauth.utils import import_oauth_class
 
 
-version_info = (0, 1, 0)
+version_info = (0, 3, 3)
 VERSION = __version__ = '.'.join( map(str, version_info) )
 
 
@@ -51,7 +51,7 @@ class SocialSites(object):
                 'site_name_zh': _site_name_zh,
             }
 
-            for _k, _v in _site_config.items():
+            for _k, _v in _site_config.iteritems():
                 self._sites_class_config_table[_site_class][_k.upper()] = _v
 
             self._sites_name_list.append(_site_name)

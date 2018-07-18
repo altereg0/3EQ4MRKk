@@ -12,7 +12,7 @@ from docopt import docopt
 from gunicorn.app.base import BaseApplication
 from gunicorn.workers.sync import SyncWorker
 
-from example.app import MyService
+from example.app import AlterService
 from example.config import AppConfig
 
 
@@ -57,7 +57,7 @@ def main():
         }
     )
 
-    api_app = MyService(cfg)
+    api_app = AlterService(cfg)
     gunicorn_app = GunicornApp(api_app, cfg.gunicorn)
 
     gunicorn_app.run()

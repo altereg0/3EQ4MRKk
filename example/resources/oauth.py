@@ -6,12 +6,18 @@ import json
 import falcon
 from string import Template
 
-from app.models.user import UserModel
+from falcon.media.validators.jsonschema import validate
 
-from app import configuration
-from app.socialoauth import SocialSites, SocialAPIError
+from sqlalchemy.exc import IntegrityError
 
-from app.helpers import generate_user_token
+from example.db import models
+from example.resources import BaseResource
+from example.schemas import load_schema
+
+
+from example.db.models  import UserModel
+from example.socialoauth import SocialSites, SocialAPIError
+from example.helpers import generate_user_token
 
 from marshmallow_jsonapi import Schema, fields
 
@@ -22,9 +28,12 @@ IMAGE_PATH = os.path.join(CURRENT_PATH, 'images')
 
 SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localStorage.setItem("token", "$token"); window.close();</script></head><body></body></html>'
 
-class OAuthResource(object):
-    def __init__(self):
-        self.social_sites = SocialSites(configuration.social_oauth_sites)
+class OAuthBaseResource(BaseResource):
+    def __init__(self, db_manager, cfg):
+        super(OAuthBaseResource, self).__init__(db_manager)
+        self.social_sites = SocialSites(cfg)
+
+class OAuthResource(OAuthBaseResource):
 
     def _link(self, site_class):
         _s = self.social_sites.get_site_object_by_class(site_class)
@@ -47,7 +56,7 @@ class OAuthResource(object):
         resp.body = 'Server works!'
 
 
-class CallbackResource(object):
+class CallbackResource(OAuthBaseResource):
     def on_get(self, req, resp, provider):
         code = req.params.get('code')
         if not code:
@@ -60,7 +69,7 @@ class CallbackResource(object):
                                           challenges,
                                           href='http://docs.example.com/auth')
 
-        socialsites = SocialSites(configuration)
+        socialsites = SocialSites(self.social_sites)
         s = socialsites.get_site_object_by_name(provider)
         try:
             s.get_access_token(code)

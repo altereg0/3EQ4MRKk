@@ -1,7 +1,5 @@
 import jwt
 import datetime
-from app import configuration
-
 
 """
 4.1.1.  "iss" (Issuer) Claim
@@ -12,7 +10,10 @@ from app import configuration
 4.1.6.  "iat" (Issued At) Claim
 4.1.7.  "jti" (JWT ID) Claim
 """
+
+
 def generate_user_token(user):
+    configuration = {'secret': "0000"}
     payload = {
         'user': user.id,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=600)
