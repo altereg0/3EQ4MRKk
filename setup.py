@@ -9,7 +9,7 @@ with open('README.rst') as f:
 setup(
     name='falcon-example',
     version='0.1.0',
-    description=('Example '),
+    description=('Demo '),
     long_description=desc,
     url='https://github.com/altereg0/3EQ4MRKk.git',
     author='alter',
