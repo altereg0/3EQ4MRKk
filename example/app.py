@@ -2,13 +2,37 @@ import falcon
 
 from example.db.manager import DBManager
 from example.middleware.context import ContextMiddleware
-from example.resources import scores
+from example.middleware.security import SecurityMiddlware
+from example.resources import scores, IndexResource, \
+    EmployeeCollectionResource, EmployeeResource, \
+    MessageCollectionResource, MessageResource, \
+    OAuthResource, CallbackResource
+
+class SinkAdapter(object):
+    def __call__(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        with open('web/public/index.html', 'r') as f:
+            resp.body = f.read()
+
+class SuccessAdapter(object):
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        with open('web/public/success.html', 'r') as f:
+            resp.body = f.read()
+
+class AlterRequest(falcon.Request):
+    def __init__(self, env, options=None):
+        super(AlterRequest, self).__init__(env, options)
+        self.token = None
 
 
 class MyService(falcon.API):
     def __init__(self, cfg):
         super(MyService, self).__init__(
-            middleware=[ContextMiddleware()]
+            middleware=[ContextMiddleware(), SecurityMiddlware()],
+            request_type=AlterRequest
         )
 
         self.cfg = cfg
@@ -23,6 +47,23 @@ class MyService(falcon.API):
         # Build routes
         self.add_route('/scores', scores_res)
 
+        # Alter routes
+        self.add_route('/api', indexResource)
+        self.add_route('/api/index', indexResource)
+        self.add_route('/api/employees', EmployeeCollectionResource())
+        self.add_route('/api/employees/{id}', EmployeeResource())
+
+        self.add_route('/api/messages', MessageCollectionResource())
+        self.add_route('/api/messages/{id}', MessageResource())
+
+        self.add_route('/oauth', oauthResource)
+        self.add_route('/oauth/{provider}', callbackResource)
+
+        self.add_route('/auth/success', SuccessAdapter())
+
+        sink = SinkAdapter()
+        self.add_sink(sink, r'/')
+
     def start(self):
         """ A hook to when a Gunicorn worker calls run()."""
         pass
@@ -30,3 +71,5 @@ class MyService(falcon.API):
     def stop(self, signal):
         """ A hook to when a Gunicorn worker starts shutting down. """
         pass
+
+### asd

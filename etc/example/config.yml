@@ -1,8 +1,15 @@
 ---
+  app: "me"
   db:
-    connection: "sqlite:///:memory:"
+    # The sqlite :memory: identifier is the default if no filepath is present. Specify sqlite:// and nothing else:
+    connection: sqlite://
+  mongodb:
+    connection: ""
   gunicorn:
     bind: 0.0.0.0:8000
     workers: 1
     threads: 4
     timeout: 30
+  secret: "b042cd6b222c1de10bc3432c6bdad55194d0467ee13a2150d7d9e28d9dfe894d"
+  social_oauth_sites:
+    me: "any"

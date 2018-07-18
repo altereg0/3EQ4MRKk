@@ -2,15 +2,22 @@ import copy
 import json
 import unittest
 import aumbry
-from falcon.testing.client import TestClient
+from falcon import testing
 # import testing.mysqld
 
 from example.app import MyService
 from example.config import AppConfig
 
+from falcon import testing
 
-class AppTestCase(unittest.TestCase):
+
+class AppTestCase(testing.TestCase):
     def setUp(self):
+        super(AppTestCase, self).setUp()
+        # Assume the hypothetical `myapp` package has a
+        # function called `create()` to initialize and
+        # return a `falcon.API` instance.
+        # self.app = myapp.create()
         # self.mysqld = self.Mysqld()
 
         # cfg = AppConfig()
@@ -23,7 +30,8 @@ class AppTestCase(unittest.TestCase):
                 'CONFIG_FILE_PATH': './etc/example/config.yml'
             }
         )
-        self.app = TestApp(cfg, MyService)
+        # self.app = TestApp(cfg, MyService)
+        self.app = MyService(cfg)
 
     def tearDown(self):
         # self.mysqld.stop()
@@ -38,13 +46,6 @@ class AppTestCase(unittest.TestCase):
     def tearDownClass(cls):
         # cls.Mysqld.clear_cache()
         pass
-
-
-class TestApp(object):
-    def __init__(self, cfg, api_class):
-        self.cfg = cfg
-        self.app = api_class(self.cfg)
-        self.client = TestClient(self.app)
 
     @property
     def db(self):
@@ -63,14 +64,14 @@ class TestApp(object):
         return all_headers
 
     def get(self, path, params=None, headers=None):
-        return self.client.simulate_get(
+        return self.simulate_get(
             path,
             params=params,
             headers=self.get_headers(headers)
         )
 
     def post(self, path, body=None, params=None, headers=None):
-        return self.client.simulate_post(
+        return self.simulate_post(
             path,
             body=body,
             params=params,
@@ -78,7 +79,7 @@ class TestApp(object):
         )
 
     def put(self, path, body=None, params=None, headers=None):
-        return self.client.simulate_put(
+        return self.simulate_put(
             path,
             body=body,
             params=params,
@@ -86,7 +87,7 @@ class TestApp(object):
         )
 
     def delete(self, path, params=None, headers=None):
-        return self.client.simulate_delete(
+        return self.simulate_delete(
             path,
             params=params,
             headers=self.get_headers(headers)

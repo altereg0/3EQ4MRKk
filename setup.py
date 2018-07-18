@@ -22,7 +22,13 @@ REQUIRED = [
     'docopt>=0.6.2',
     'jsonschema>=2.5.1',
     'sqlalchemy>=1.1.4',
-    'aumbry[yaml]>=0.7.0'
+    'aumbry[yaml]>=0.7.0',
+    'peppercorn',
+    'falcon',
+    'marshmallow-jsonapi',
+    'pyjwt',
+    'oauth2',
+    'pymongo'
 ]
 
 # What packages are optional?

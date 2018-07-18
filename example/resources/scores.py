@@ -11,7 +11,7 @@ from example.schemas import load_schema
 
 class ScoresResource(BaseResource):
     def on_get(self, req, resp):
-        model_list = models.UserScores.get_list(self.db.session)
+        model_list = models.UserModel.get_list(self.db.session)
 
         scores = [model.as_dict for model in model_list]
 
@@ -22,7 +22,7 @@ class ScoresResource(BaseResource):
 
     @validate(load_schema('scores_creation'))
     def on_post(self, req, resp):
-        model = models.UserScores(
+        model = models.UserModel(
             username=req.media.get('username'),
             company=req.media.get('company'),
             score=req.media.get('score')
