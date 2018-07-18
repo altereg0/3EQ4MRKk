@@ -41,3 +41,6 @@ Install test requirements
     pip install -r dev-requirements.txt
 
 Execute the tests by running the ``tox`` command:
+
+Alter
+_____
