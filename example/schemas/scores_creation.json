@@ -1,21 +1,24 @@
 {
-    "title": "Create Score",
-    "type": "object",
-    "properties": {
-        "username": {
-            "type": "string"
-        },
-        "company": {
-            "type": "string"
-        },
-        "score": {
-            "type": "integer",
-            "minimum": 0
-        }
+  "title": "Create Score",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string"
     },
-    "required": [
-        "username",
-        "company",
-        "score"
-    ]
+    "company": {
+      "type": "string"
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "any": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "username",
+    "company",
+    "score"
+  ]
 }

@@ -1,9 +1,9 @@
 import copy
 import json
 import unittest
-
+import aumbry
 from falcon.testing.client import TestClient
-import testing.mysqld
+# import testing.mysqld
 
 from example.app import MyService
 from example.config import AppConfig
@@ -11,23 +11,33 @@ from example.config import AppConfig
 
 class AppTestCase(unittest.TestCase):
     def setUp(self):
-        self.mysqld = self.Mysqld()
+        # self.mysqld = self.Mysqld()
 
-        cfg = AppConfig()
-        cfg.db.connection = self.mysqld.url()
+        # cfg = AppConfig()
+        # cfg.db.connection = self.mysqld.url()
 
+        cfg = aumbry.load(
+            aumbry.FILE,
+            AppConfig,
+            {
+                'CONFIG_FILE_PATH': './etc/example/config.yml'
+            }
+        )
         self.app = TestApp(cfg, MyService)
 
     def tearDown(self):
-        self.mysqld.stop()
+        # self.mysqld.stop()
+        pass
 
     @classmethod
     def setUpClass(cls):
-        cls.Mysqld = testing.mysqld.MysqldFactory(cache_initialized_db=True)
+        # cls.Mysqld = testing.mysqld.MysqldFactory(cache_initialized_db=True)
+        pass
 
     @classmethod
     def tearDownClass(cls):
-        cls.Mysqld.clear_cache()
+        # cls.Mysqld.clear_cache()
+        pass
 
 
 class TestApp(object):
