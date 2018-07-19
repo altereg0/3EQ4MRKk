@@ -1,11 +1,11 @@
 # import jwt
-# import falcon
-
-def _token_is_valid(self, token, account_id):
-    return True  # Suuuuuure it's valid...
+import falcon
 
 
 class SecurityMiddlware(object):
+
+    def _token_is_valid(self, token, account_id):
+        return True  # Suuuuuure it's valid...
 
     def process_request(self, req, resp):
         """Process the request before routing it.
@@ -19,13 +19,12 @@ class SecurityMiddlware(object):
         token = req.get_header('Authorization')
         account_id = req.get_header('Account-ID')
 
-        challenges = ['Bearer']
-
-        return
+        challenges = ['Bearer realm="example', 'error="invalid_token"', 'error_description="The access token expired"']
 
         # if token is None:
         #     description = ('Please provide an auth token as part of the request.')
-        #     raise falcon.HTTPUnauthorized('Auth token required', description, challenges, href='http://docs.example.com/auth')
+        #     raise falcon.HTTPUnauthorized('Auth token required', description, challenges,
+        #                                   href='http://docs.example.com/auth')
         #
         # if not self._token_is_valid(token, account_id):
         #     description = ('The provided auth token is not valid. '
@@ -35,6 +34,15 @@ class SecurityMiddlware(object):
         #                                   description,
         #                                   challenges,
         #                                   href='http://docs.example.com/auth')
+
+
+        if token is None:
+            # anonimous user
+            req.token = {}
+        else:
+            if not self._token_is_valid(token, account_id):
+                # TODO требуется refresh токена
+                pass
 
     def process_resource(self, req, resp, resource, params):
         """Process the request after routing.
