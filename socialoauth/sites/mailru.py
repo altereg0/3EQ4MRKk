@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from example.socialoauth.sites.base import OAuth2
+from socialoauth.sites.base import OAuth2
 
 
 class MailRu(OAuth2):

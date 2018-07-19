@@ -56,8 +56,8 @@ class AlterService(falcon.API):
         self.add_route('/api/messages', message.MessageCollectionResource(mgr))
         self.add_route('/api/messages/{id}', message.MessageResource(mgr))
 
-        self.add_route('/oauth', oauth.OAuthResource(mgr, cfg.social_sites))
-        self.add_route('/oauth/{provider}', oauth.CallbackResource(mgr, cfg.social_sites))
+        self.add_route('/oauth', oauth.OAuthResource(mgr, cfg.social_config))
+        self.add_route('/oauth/{provider}', oauth.CallbackResource(mgr, cfg.social_config))
 
         self.add_route('/auth/success', SuccessAdapter())
 

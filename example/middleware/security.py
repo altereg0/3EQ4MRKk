@@ -1,5 +1,5 @@
-import jwt
-import falcon
+# import jwt
+# import falcon
 
 def _token_is_valid(self, token, account_id):
     return True  # Suuuuuure it's valid...
@@ -23,18 +23,18 @@ class SecurityMiddlware(object):
 
         return
 
-        if token is None:
-            description = ('Please provide an auth token as part of the request.')
-            raise falcon.HTTPUnauthorized('Auth token required', description, challenges, href='http://docs.example.com/auth')
-
-        if not self._token_is_valid(token, account_id):
-            description = ('The provided auth token is not valid. '
-                           'Please request a new token and try again.')
-
-            raise falcon.HTTPUnauthorized('Authentication required',
-                                          description,
-                                          challenges,
-                                          href='http://docs.example.com/auth')
+        # if token is None:
+        #     description = ('Please provide an auth token as part of the request.')
+        #     raise falcon.HTTPUnauthorized('Auth token required', description, challenges, href='http://docs.example.com/auth')
+        #
+        # if not self._token_is_valid(token, account_id):
+        #     description = ('The provided auth token is not valid. '
+        #                    'Please request a new token and try again.')
+        #
+        #     raise falcon.HTTPUnauthorized('Authentication required',
+        #                                   description,
+        #                                   challenges,
+        #                                   href='http://docs.example.com/auth')
 
 
 

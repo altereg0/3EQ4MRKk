@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 import falcon
 import json
+# from sqlalchemy.exc import IntegrityError
+# from example.db import models
+from example.resources import BaseResource
+# from example.schemas import load_schema
 
-
-class EmployeeCollectionResource(object):
-    def __init__(self):
-        pass
+class EmployeeCollectionResource(BaseResource):
 
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
@@ -21,9 +22,7 @@ class EmployeeCollectionResource(object):
         resp.body = 'Server works!'
 
 
-class EmployeeResource(object):
-    def __init__(self):
-        pass
+class EmployeeResource(BaseResource):
 
     def on_get(self, req, resp, id):
         resp.status = falcon.HTTP_200

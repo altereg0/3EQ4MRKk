@@ -2,12 +2,14 @@
 from time import sleep
 import falcon
 import json
-from example.db.models import MessageModel
+# from example.db.models import MessageModel
+# from sqlalchemy.exc import IntegrityError
+# from example.db import models
+from example.resources import BaseResource
+# from example.schemas import load_schema
 
 
-class MessageCollectionResource(object):
-    def __init__(self):
-        self.model = MessageModel()
+class MessageCollectionResource(BaseResource):
 
     def on_get(self, req, resp):
         # m = self.model.get_all()
@@ -16,7 +18,8 @@ class MessageCollectionResource(object):
              {"id": 5, "title": "Charlie", "content": "charlie@fakemail.com", "city": "Boston, MA"},
              )
         resp.status = falcon.HTTP_200
-        resp.body = self.model.schema.dumps(m, many=True).data
+        # resp.body = self.model.schema.dumps(m, many=True).data
+        resp.body = json.dumps(m)
 
     def on_post(self, req, resp):
         resp.status = falcon.HTTP_200
@@ -24,9 +27,7 @@ class MessageCollectionResource(object):
         resp.body = "Nothing"
 
 
-class MessageResource(object):
-    def __init__(self):
-        pass
+class MessageResource(BaseResource):
 
     def on_get(self, req, resp, id):
         resp.status = falcon.HTTP_200

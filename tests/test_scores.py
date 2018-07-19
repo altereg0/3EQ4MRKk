@@ -30,3 +30,10 @@ class TestScoresResource(app.AppTestCase):
 
         score_list = get_req.json.get('scores')
         self.assertEqual(len(score_list), 1)
+
+    def test_api(self):
+        get_req = self.get('/api')
+        self.assertEqual(get_req.status_code, 200)
+
+        body = get_req.text
+        self.assertEqual(body, 'Server works!')

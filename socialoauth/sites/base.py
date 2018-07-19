@@ -6,8 +6,8 @@ from urllib.parse import urlencode, quote_plus
 
 from functools import wraps
 
-from example.socialoauth.exception import SocialAPIError, SocialSitesConfigError
-from example.socialoauth import SocialSites
+from socialoauth.exception import SocialAPIError, SocialSitesConfigError
+from socialoauth import SocialSites
 
 HTTP_TIMEOUT = 10
 
@@ -75,7 +75,7 @@ class OAuth2(object):
         """
         key = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)
         configs = socialsites.load_config(key)
-        for k, v in configs.iteritems():
+        for k, v in configs.    items():
             setattr(self, k, v)
 
     @_http_error_handler

@@ -6,17 +6,16 @@ import json
 import falcon
 from string import Template
 
-from falcon.media.validators.jsonschema import validate
-
-from sqlalchemy.exc import IntegrityError
-
-from example.db import models
+# from falcon.media.validators.jsonschema import validate
+# from sqlalchemy.exc import IntegrityError
+# from example.db import models
 from example.resources import BaseResource
-from example.schemas import load_schema
+# from example.schemas import load_schema
 
 
 from example.db.models  import UserModel
-from example.socialoauth import SocialSites, SocialAPIError
+from socialoauth import SocialSites
+from socialoauth.exception import SocialAPIError
 from example.helpers import generate_user_token
 
 from marshmallow_jsonapi import Schema, fields
@@ -31,7 +30,7 @@ SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localSt
 class OAuthBaseResource(BaseResource):
     def __init__(self, db_manager, cfg):
         super(OAuthBaseResource, self).__init__(db_manager)
-        self.social_sites = SocialSites(cfg)
+        self.social_sites = SocialSites(cfg.sites_list)
 
 class OAuthResource(OAuthBaseResource):
 
