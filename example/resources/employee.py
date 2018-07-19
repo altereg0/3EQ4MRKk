@@ -4,6 +4,8 @@ import json
 # from sqlalchemy.exc import IntegrityError
 # from example.db import models
 from example.resources import BaseResource
+
+
 # from example.schemas import load_schema
 
 class EmployeeCollectionResource(BaseResource):
@@ -15,7 +17,7 @@ class EmployeeCollectionResource(BaseResource):
                 {"id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King",
                  "title": "VP of Marketing", "department": "Marketing", "cellPhone": "617-000-0002",
                  "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA",
-                 "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"},)
+                 "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"}, )
 
     def on_post(self, req, resp):
         resp.status = falcon.HTTP_200
@@ -30,7 +32,7 @@ class EmployeeResource(BaseResource):
             {"id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King",
              "title": "VP of Marketing", "department": "Marketing", "cellPhone": "617-000-0002",
              "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA",
-             "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"},)
+             "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"}, )
 
     def on_post(self, req, resp):
         resp.status = falcon.HTTP_200

@@ -1,4 +1,4 @@
 [run]
 branch = True
 source = example
-omit = tests/*
+omit = tests/*,socialoauth/*

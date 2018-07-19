@@ -1,16 +1,7 @@
 Example Falcon Service
 =======================
 
-This project is an example of a full fledged Falcon API service.
-The intended purpose is to show one of the many ways people can build services
-with the following features:
-
-* Input Validation
-* Simple ORM usage
-* Testing
-* CLI entrypoint
-* Middleware
-* Custom Gunicorn Workers
+lorem
 
 Installation
 ------------

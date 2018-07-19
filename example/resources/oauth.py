@@ -13,7 +13,7 @@ from example.resources import BaseResource
 # from example.schemas import load_schema
 
 
-from example.db.models  import UserModel
+from example.db.models import UserModel
 from socialoauth import SocialSites
 from socialoauth.exception import SocialAPIError
 from example.helpers import generate_user_token
@@ -27,10 +27,12 @@ IMAGE_PATH = os.path.join(CURRENT_PATH, 'images')
 
 SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localStorage.setItem("token", "$token"); window.close();</script></head><body></body></html>'
 
+
 class OAuthBaseResource(BaseResource):
     def __init__(self, db_manager, cfg):
         super(OAuthBaseResource, self).__init__(db_manager)
         self.social_sites = SocialSites(cfg.sites_list)
+
 
 class OAuthResource(OAuthBaseResource):
 
@@ -40,7 +42,7 @@ class OAuthResource(OAuthBaseResource):
             # TODO Добавить путь к пиктограмме OAuth сервиса
             pass
 
-        return dict(id=_s.ID, name = _s.site_name, title=_s.site_name_zh, url=_s.authorize_url)
+        return dict(id=_s.ID, name=_s.site_name, title=_s.site_name_zh, url=_s.authorize_url)
 
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200

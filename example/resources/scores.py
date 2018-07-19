@@ -8,6 +8,7 @@ from example.db import models
 from example.resources import BaseResource
 from example.schemas import load_schema
 
+
 class ScoresResource(BaseResource):
     def on_get(self, req, resp):
         model_list = models.UserModel.get_list(self.db.session)

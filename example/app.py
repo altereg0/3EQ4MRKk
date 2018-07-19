@@ -6,6 +6,7 @@ from example.middleware.security import SecurityMiddlware
 from example.resources import scores, message, index, employee, oauth
 from falcon.testing import SimpleTestResource
 
+
 class SinkAdapter(object):
     def __call__(self, req, resp):
         resp.status = falcon.HTTP_200
