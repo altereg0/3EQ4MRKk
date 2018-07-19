@@ -1,7 +1,10 @@
+# -----------------------------------------------------------------
+# unittest
+# -----------------------------------------------------------------
 from tests.helpers import app
 
 
-class TestScoresResource(app.AppTestCase):
+class TestBasicResource(app.AppTestCase):
     def test_can_create(self):
         req = self.post_json(
             '/scores',

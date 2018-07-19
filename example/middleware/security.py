@@ -4,8 +4,8 @@
 def _token_is_valid(self, token, account_id):
     return True  # Suuuuuure it's valid...
 
-class SecurityMiddlware(object):
 
+class SecurityMiddlware(object):
 
     def process_request(self, req, resp):
         """Process the request before routing it.
@@ -36,8 +36,6 @@ class SecurityMiddlware(object):
         #                                   challenges,
         #                                   href='http://docs.example.com/auth')
 
-
-
     def process_resource(self, req, resp, resource, params):
         """Process the request after routing.
 
@@ -58,7 +56,6 @@ class SecurityMiddlware(object):
                 method as keyword arguments.
         """
         pass
-
 
     def process_response(self, req, resp, resource):
         """Post-processing of the response (after routing).

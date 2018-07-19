@@ -4,7 +4,7 @@ from example.db.manager import DBManager
 from example.middleware.context import ContextMiddleware
 from example.middleware.security import SecurityMiddlware
 from example.resources import scores, message, index, employee, oauth
-
+from falcon.testing import SimpleTestResource
 
 class SinkAdapter(object):
     def __call__(self, req, resp):
@@ -60,6 +60,8 @@ class AlterService(falcon.API):
         self.add_route('/oauth/{provider}', oauth.CallbackResource(mgr, cfg.social_config))
 
         self.add_route('/auth/success', SuccessAdapter())
+
+        self.add_route('/mock', SimpleTestResource(falcon.HTTP_200, json={"foo": "bar"}))
 
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
