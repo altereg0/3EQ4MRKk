@@ -1,3 +1,4 @@
+#base config
 ---
   app: "me"
   db:
@@ -10,6 +11,46 @@
     workers: 1
     threads: 4
     timeout: 30
+    accesslog: "-"
   secret: "b042cd6b222c1de10bc3432c6bdad55194d0467ee13a2150d7d9e28d9dfe894d"
-  social_oauth_sites:
-    me: "any"
+
+#oauth config
+  social_config:
+    base_url: http://fp.retla.net
+    sites_list:
+      -
+        - baidu
+        - socialoauth.sites.baidu.Baidu
+        - Baidu
+        - redirect_uri: http://baidu.example.com
+          client_id: YOUR_ID
+          client_secret: YOUR SECRET
+          scope:
+            - baidu_common
+      -
+        - github
+        - socialoauth.sites.github.Github
+        - Github
+        - redirect_uri: oauth/github
+          client_id: bc28b3f7273bf2397f_fake
+          client_secret: cbp2397fh23f293h9f2983hf_fake
+          scope:
+            - user
+      -
+        - decoy
+        - socialoauth.sites.decoy.Decoy
+        - Decoy
+        - redirect_uri: oauth/decoy
+          client_id: abc000000000000
+          client_secret: abc0000000000000000000000
+          scope:
+            - user
+      -
+        - mailru
+        - socialoauth.sites.mailru.MailRu
+        - Mail.RU
+        - redirect_uri: oauth/mailru
+          client_id: adqwefwqerf_fake
+          client_secret: cbi23gf87h2p3hf92hf39uoh29fhc9oq23h_fake
+          scope:
+            - user
