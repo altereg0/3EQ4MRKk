@@ -2,7 +2,7 @@
 Example Application
 
 Usage:
-    falcon-example [options]
+    backend-example [options]
 
 Options:
     -h --help                   Show this screen.

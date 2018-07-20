@@ -1,2 +1,3 @@
 tox
+uwsgi
 -r test-requirements.txt

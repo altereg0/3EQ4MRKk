@@ -12,7 +12,7 @@ class AppTestCase(testing.TestCase):
         super(AppTestCase, self).setUp()
         # Assume the hypothetical `myapp` package has a
         # function called `create()` to initialize and
-        # return a `falcon.API` instance.
+        # return a `backend.API` instance.
         # self.app = myapp.create()
         # self.mysqld = self.Mysqld()
 

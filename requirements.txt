@@ -1,0 +1,13 @@
+nose
+sphinx
+pyjwt
+falcon
+falcon-cors
+marshmallow
+marshmallow_jsonapi
+pymongo
+tox
+aumbry[yaml]
+sqlalchemy
+jsonschema
+docopt

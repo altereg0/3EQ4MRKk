@@ -57,10 +57,10 @@ class AlterService(falcon.API):
         self.add_route('/api/messages', message.MessageCollectionResource(mgr))
         self.add_route('/api/messages/{id}', message.MessageResource(mgr))
 
-        self.add_route('/oauth', oauth.OAuthResource(mgr, cfg.social_config))
-        self.add_route('/oauth/{provider}', oauth.CallbackResource(mgr, cfg.social_config))
+        self.add_route('/api/oauth', oauth.OAuthResource(mgr, cfg.social_config))
+        self.add_route('/api/oauth/{provider}', oauth.CallbackResource(mgr, cfg.social_config))
 
-        self.add_route('/auth/success', SuccessAdapter())
+        self.add_route('/api/oauth/success', SuccessAdapter())
 
         self.add_route('/mock', SimpleTestResource(falcon.HTTP_200, json={"foo": "bar"}))
 
@@ -76,3 +76,10 @@ class AlterService(falcon.API):
         pass
 
 ### asd
+
+class AlterDecoy():
+    def _hmm(self):
+        return 'fuuz'
+    def hmm(self):
+        if False:
+            return self._hmm()
