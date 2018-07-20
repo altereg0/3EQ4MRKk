@@ -7,10 +7,10 @@ from shutil import rmtree
 from setuptools import setup, find_packages
 
 # Package meta-data.
-NAME = 'example'
+NAME = 'aness'
 DESCRIPTION = 'My short description for my project.'
 URL = 'https://github.com/altereg0/3EQ4MRKk'
-EMAIL = 'me@example.com'
+EMAIL = 'me@aness.com'
 AUTHOR = 'alter'
 REQUIRES_PYTHON = '>=3.5.0'
 VERSION = None
@@ -25,9 +25,9 @@ REQUIRED = [
     'aumbry[yaml]>=0.7.0',
     'peppercorn',
     'falcon',
+    'marshmallow',
     'marshmallow-jsonapi',
     'pyjwt',
-    'oauth2',
     'pymongo'
 ]
 
@@ -97,7 +97,7 @@ setup(
     # },
     entry_points={
         'console_scripts': [
-            'falcon-example = example.__main__:main'
+            'aness = aness.__main__:main'
         ],
     },
 )

@@ -19,7 +19,7 @@ class SecurityMiddlware(object):
         token = req.get_header('Authorization')
         account_id = req.get_header('Account-ID')
 
-        challenges = ['Bearer realm="example', 'error="invalid_token"', 'error_description="The access token expired"']
+        challenges = ['Bearer realm="aness', 'error="invalid_token"', 'error_description="The access token expired"']
 
         # if token is None:
         #     description = ('Please provide an auth token as part of the request.')

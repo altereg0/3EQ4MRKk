@@ -8,15 +8,15 @@ from string import Template
 
 # from falcon.media.validators.jsonschema import validate
 # from sqlalchemy.exc import IntegrityError
-# from example.db import models
-from example.resources import BaseResource
-# from example.schemas import load_schema
+# from aness.db import models
+from aness.resources import BaseResource
+# from aness.schemas import load_schema
 
 
-from example.db.models import UserModel
+from aness.db.models import UserModel
 from socialoauth import SocialSites
 from socialoauth.exception import SocialAPIError
-from example.helpers import generate_user_token
+from aness.helpers import generate_user_token
 
 from marshmallow_jsonapi import Schema, fields
 

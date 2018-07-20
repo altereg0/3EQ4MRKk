@@ -19,6 +19,7 @@ class AppConfig(YamlConfig):
     __mapping__ = {
         'db': Attr('db', DatabaseConfig),
         'gunicorn': Attr('gunicorn', dict),
+        'wsgiref': Attr('wsgiref', dict),
         'social_config': Attr('social_config', SocialOAuthConfig)
     }
 

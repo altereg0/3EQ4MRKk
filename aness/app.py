@@ -1,9 +1,9 @@
 import falcon
 
-from example.db.manager import DBManager
-from example.middleware.context import ContextMiddleware
-from example.middleware.security import SecurityMiddlware
-from example.resources import scores, message, index, employee, oauth
+from aness.db.manager import DBManager
+from aness.middleware.context import ContextMiddleware
+from aness.middleware.security import SecurityMiddlware
+from aness.resources import scores, message, index, employee, oauth
 from falcon.testing import SimpleTestResource
 
 

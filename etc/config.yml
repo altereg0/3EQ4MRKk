@@ -12,6 +12,9 @@
     threads: 4
     timeout: 30
     accesslog: "-"
+  wsgiref:
+    host: 127.0.0.1
+    port: 8001
   secret: "b042cd6b222c1de10bc3432c6bdad55194d0467ee13a2150d7d9e28d9dfe894d"
 
 #oauth config
@@ -22,7 +25,7 @@
         - baidu
         - socialoauth.sites.baidu.Baidu
         - Baidu
-        - redirect_uri: http://baidu.example.com
+        - redirect_uri: http://baidu.aness.com
           client_id: YOUR_ID
           client_secret: YOUR SECRET
           scope:

@@ -3,7 +3,7 @@
 Example Application
 
 Usage:
-    backend-example [options]
+    backend-aness [options]
 
 Options:
     -h --help                   Show this screen.
@@ -12,8 +12,8 @@ import aumbry
 from docopt import docopt
 from wsgiref import simple_server
 
-from example.app import AlterService
-from example.config import AppConfig
+from aness.app import AlterService
+from aness.config import AppConfig
 
 # Set up falcon api
 # app = application = create_app()
@@ -24,7 +24,7 @@ cfg = aumbry.load(
     aumbry.FILE,
     AppConfig,
     {
-        'CONFIG_FILE_PATH': './etc/example/config.yml'
+        'CONFIG_FILE_PATH': './etc/aness/config.yml'
     }
 )
 

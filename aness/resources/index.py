@@ -2,9 +2,9 @@
 import falcon
 
 # from sqlalchemy.exc import IntegrityError
-# from example.db import models
-from example.resources import BaseResource
-# from example.schemas import load_schema
+# from aness.db import models
+from aness.resources import BaseResource
+# from aness.schemas import load_schema
 
 class IndexResource(BaseResource):
 

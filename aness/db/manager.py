@@ -4,7 +4,7 @@ from sqlalchemy.orm import scoping
 
 # Needed by the setup method as we want to make sure
 # all models are loaded before we call create_all(...)
-from example.db import models
+from aness.db import models
 
 
 class DBManager(object):
