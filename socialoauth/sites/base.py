@@ -80,20 +80,20 @@ class OAuth2(object):
 
     @_http_error_handler
     def http_get(self, url, data, parse=True):
-        req = request.Request('%s?%s' % (url, urlencode(data)))
+        req = request.Request('%s?%s' % (url, urlencode(data).encode()))
         self.http_add_header(req)
         res = request.urlopen(req, timeout=HTTP_TIMEOUT).read()
         if parse:
-            return json.loads(res)
+            return json.loads(res.decode())
         return res
 
     @_http_error_handler
     def http_post(self, url, data, parse=True):
-        req = request.Request(url, data=urlencode(data))
+        req = request.Request(url, data=urlencode(data).encode())
         self.http_add_header(req)
         res = request.urlopen(req, timeout=HTTP_TIMEOUT).read()
         if parse:
-            return json.loads(res)
+            return json.loads(res.decode())
         return res
 
     def http_add_header(self, req):

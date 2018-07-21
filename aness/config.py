@@ -15,9 +15,17 @@ class DatabaseConfig(YamlConfig):
     connection = ''
 
 
+class DatabaseWrapperConfig(YamlConfig):
+    __mapping__ = {
+        'sa': Attr('sa', DatabaseConfig),
+        'pw': Attr('pw', DatabaseConfig),
+    }
+    connection = ''
+
+
 class AppConfig(YamlConfig):
     __mapping__ = {
-        'db': Attr('db', DatabaseConfig),
+        'db': Attr('db', DatabaseWrapperConfig),
         'gunicorn': Attr('gunicorn', dict),
         'wsgiref': Attr('wsgiref', dict),
         'social_config': Attr('social_config', SocialOAuthConfig)

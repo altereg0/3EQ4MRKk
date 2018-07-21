@@ -1,77 +1,71 @@
-import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base
+from peewee import *
 
-SAModel = declarative_base()
-
-
-class UserModel(SAModel):
-    __tablename__ = 'users'
-
-    id = sa.Column(sa.Integer, primary_key=True)
-    username = sa.Column(sa.String(128), unique=True)
-    provider = sa.Column(sa.String(128))
-    provider_id = sa.Column(sa.Integer)
-    score = sa.Column(sa.Integer)
-
-    def __init__(self, username, provider, score):
-        # super(UserModel, self).__init__()
-        self.username = username
-        self.provider = provider
-        self.score = score
-
-    @property
-    def as_dict(self):
-        return {
-            'username': self.username,
-            'provider': self.provider,
-            'score': self.score
-        }
-
-    def save(self, session):
-        with session.begin():
-            session.add(self)
-
-    @classmethod
-    def get_list(cls, session):
-        models = []
-
-        with session.begin():
-            query = session.query(cls)
-            models = query.all()
-
-        return models
+database_persistent = SqliteDatabase(None)
 
 
-class MessageModel(SAModel):
-    __tablename__ = 'messages'
+class BaseModel(Model):
+    class Meta:
+        database = database_persistent
 
-    id = sa.Column(sa.Integer, primary_key=True)
-    user_id = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
-    message = sa.Column(sa.String(128))
-    timestamp = sa.Column(sa.Integer)
 
-    def __init__(self, user_id, message):
-        # super(MesageModel, self).__init__()
-        self.user_id = user_id
-        self.message = message
+class Categories(BaseModel):
+    name = TextField(null=True)
+    parent = ForeignKeyField('self', db_column='parent_id', rel_model='self', to_field='id', null=True)
+    url = TextField(null=True)
 
-    @property
-    def as_dict(self):
-        return {
-            'author': self.user_id,
-            'message': self.message
-        }
+    class Meta:
+        db_table = 'categories'
 
-    def save(self, session):
-        with session.begin():
-            session.add(self)
 
-    @classmethod
-    def get_list(cls, session):
-        models = []
+class Items(BaseModel):
+    category = ForeignKeyField(Categories, db_column='category_id', null=True, rel_model=Categories, to_field='id')
+    description = TextField(null=True)
+    details = TextField(null=True)
+    item = IntegerField(db_column='item_id')
+    timestamp = TimestampField(null=True)
+    title = TextField(null=True)
+    url = TextField(null=True)
+    comment = TextField(null=True)
+    active = BooleanField(default=True)
+    price = FloatField(default=0.0)
 
-        with session.begin():
-            query = session.query(cls)
-            models = query.all()
+    class Meta:
+        db_table = 'items'
 
-        return models
+
+class Images(BaseModel):
+    filename = TextField(null=True)
+    item = ForeignKeyField(Items, db_column='item_id', rel_model=Items, to_field='item')
+    path = TextField(null=True)
+    status_code = IntegerField(null=True)
+    timestamp = TimestampField(null=True)
+    url = TextField(null=True)
+
+    class Meta:
+        db_table = 'images'
+
+
+class Pages(BaseModel):
+    page_key = TextField(null=True)
+    status_code = IntegerField(null=True)
+    timestamp = TimestampField(null=True)
+
+    class Meta:
+        db_table = 'pages'
+
+
+class Users(BaseModel):
+    name = CharField()
+    provider = FixedCharField(8)
+    uid = CharField(16)
+
+    class Meta:
+        db_table = 'users'
+
+# class SqliteSequence(BaseModel):
+#     name = UnknownField(null=True)  #
+#     seq = UnknownField(null=True)  #
+#
+#     class Meta:
+#         db_table = 'sqlite_sequence'
+#         primary_key = False

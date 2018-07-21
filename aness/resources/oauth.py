@@ -6,14 +6,12 @@ import json
 import falcon
 from string import Template
 
-# from falcon.media.validators.jsonschema import validate
-# from sqlalchemy.exc import IntegrityError
-# from aness.db import models
+from aness.db import models
 from aness.resources import BaseResource
-# from aness.schemas import load_schema
+from aness.schemas import UserSchema
 
-
-from aness.db.models import UserModel
+from aness.db.models import Users
+from peewee import IntegrityError
 from socialoauth import SocialSites
 from socialoauth.exception import SocialAPIError
 from aness.helpers import generate_user_token
@@ -31,7 +29,9 @@ SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localSt
 class OAuthBaseResource(BaseResource):
     def __init__(self, db_manager, cfg):
         super(OAuthBaseResource, self).__init__(db_manager)
+        # patch url
         self.social_sites = SocialSites(cfg.sites_list)
+        self.base_url = cfg.base_url
 
 
 class OAuthResource(OAuthBaseResource):
@@ -89,10 +89,12 @@ class CallbackResource(OAuthBaseResource):
         #     UID = storage.bind_new_user(s.site_name, s.uid)
         #
         # storage.set_user(UID, site_name=s.site_name, uid=s.uid, name=s.name, avatar=s.avatar)
-
-        user = UserModel(provider, s.uid, s.name)
-        if not user.exists():
-            user.add()
+        try:
+            user = Users(provider=provider, name=s.name, uid=s.uid)
+            with self.db:
+                user.save()
+        except IntegrityError as e:
+            raise falcon.HTTPBadRequest('User creation error', 'Cannot save user in database')
 
         token = generate_user_token(user).decode()
         resp.status = falcon.HTTP_OK

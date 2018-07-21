@@ -23,7 +23,7 @@ class AppTestCase(testing.TestCase):
             aumbry.FILE,
             AppConfig,
             {
-                'CONFIG_FILE_PATH': './etc/aness/config.yml'
+                'CONFIG_FILE_PATH': './etc/config.yml'
             }
         )
         # self.app = TestApp(cfg, MyService)

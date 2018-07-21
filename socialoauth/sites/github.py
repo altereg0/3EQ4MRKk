@@ -37,6 +37,6 @@ class Github(OAuth2):
         res = self.api_call_get('user')
 
         self.uid = res['id']
-        self.name = res['name']
+        self.name = res['name'] or res['login']
         self.avatar = res['avatar_url']
         self.avatar_large = res['avatar_url']

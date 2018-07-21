@@ -27,8 +27,7 @@ REQUIRED = [
     'falcon',
     'marshmallow',
     'marshmallow-jsonapi',
-    'pyjwt',
-    'pymongo'
+    'pyjwt'
 ]
 
 # What packages are optional?

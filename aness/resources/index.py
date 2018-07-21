@@ -10,8 +10,8 @@ class IndexResource(BaseResource):
 
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
-        resp.body = 'Server works!'
+        resp.media = {'foo': 'bar'}
 
     def on_post(self, req, resp):
-        resp.status = falcon.HTTP_200
-        resp.body = 'Server works!'
+        resp.status = falcon.HTTP_201
+        resp.media = {'foo': 'bar'}
