@@ -28,6 +28,7 @@ class AppTestCase(testing.TestCase):
         )
         # self.app = TestApp(cfg, MyService)
         self.app = AlterService(cfg)
+        # self.app.db.
 
     def tearDown(self):
         # self.mysqld.stop()
@@ -46,10 +47,6 @@ class AppTestCase(testing.TestCase):
     @property
     def db(self):
         return self.app.db
-
-    @property
-    def session(self):
-        return self.db.session
 
     def get_headers(self, headers):
         all_headers = {}

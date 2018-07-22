@@ -18,7 +18,7 @@ def generate_user_token(user):
         'user': user.id,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=600)
     }
-    encoded = jwt.encode(payload=payload, key=configuration.secret)
+    encoded = jwt.encode(payload=payload, key=configuration['secret'])
     return encoded
 
 

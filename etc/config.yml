@@ -1,9 +1,13 @@
 #base config
 ---
-  app: "me"
+  app: "aness"
   db:
-    # The sqlite :memory: identifier is the default if no filepath is present. Specify sqlite:// and nothing else:
-    connection: sqlite://
+    sa:
+      #    SqlAlchemy - The sqlite :memory: identifier is the default if no filepath is present. Specify sqlite:// and nothing else:
+      connection: sqlite://
+    pw:
+       #   Peewee - use :memory:
+      connection: ":memory:"
   mongodb:
     connection: ""
   gunicorn:
@@ -19,7 +23,7 @@
 
 #oauth config
   social_config:
-    base_url: http://fp.retla.net
+    base_url: https://aness.retla.net
     sites_list:
       -
         - baidu

@@ -2,12 +2,31 @@ from datetime import datetime, tzinfo, timedelta
 from pathlib import Path
 from urllib.parse import urlunparse
 
-from marshmallow import Schema
-from marshmallow import fields
-from marshmallow.fields import Field
+from marshmallow import post_load
+from marshmallow_jsonapi import Schema, fields
+
 from marshmallow.validate import Range
 
+from aness.db.models import Users
+
 hostname = 'etagy.retla.net'
+
+
+class UserSchema(Schema):
+    id = fields.Integer(dump_only=True)
+    name = fields.String()
+    provider = fields.String()
+    uid = fields.String()
+
+    class Meta:
+        type_ = 'user'
+        strict = False
+
+    @post_load
+    def make_user(self, data):
+        return Users(**data)
+        # return Users.create(**data)
+
 
 class GMT3(tzinfo):
     def utcoffset(self, dt):
@@ -27,13 +46,13 @@ class GMT3(tzinfo):
         return "GMT +3 Moscow"
 
 
-class OlxImageFileName(Field):
+class OlxImageFileName(fields.Field):
     def _serialize(self, value, attr, obj):
         ret = Path(value)
         return ret.name
 
 
-class OlxTimeStampConverted(Field):
+class OlxTimeStampConverted(fields.Field):
     def _serialize(self, value, attr, obj):
         ret = value.strftime('%Y%m%d%H%M%S')
         return ret
@@ -52,11 +71,6 @@ class OlxImageSchema(Schema):
         ret = urlunparse(
             ('http', hostname, 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
         return ret
-
-
-
-class UserSchema(Schema):
-    name = fields.String()
 
 
 class OlxItemSchema(Schema):

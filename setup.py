@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import io
 import os
 import sys
@@ -14,17 +13,15 @@ EMAIL = 'me@aness.com'
 AUTHOR = 'alter'
 REQUIRES_PYTHON = '>=3.5.0'
 VERSION = None
-KEYWORDS = "falcon oauth"
+KEYWORDS = "falcon peewee oauth"
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'falcon>=1.4.1',
+    'falcon',
     'gunicorn>=19.6.0',
     'docopt>=0.6.2',
-    'jsonschema>=2.5.1',
-    'sqlalchemy>=1.1.4',
+    'peewee',
     'aumbry[yaml]>=0.7.0',
     'peppercorn',
-    'falcon',
     'marshmallow',
     'marshmallow-jsonapi',
     'pyjwt'
@@ -33,7 +30,7 @@ REQUIRED = [
 # What packages are optional?
 EXTRAS = {
     # 'fancy feature': ['django'],
-    'fancy feature': ['aumbry[cli]'],
+    # 'fancy feature': ['aumbry[cli]'],
 }
 
 # The rest you shouldn't have to touch too much :)

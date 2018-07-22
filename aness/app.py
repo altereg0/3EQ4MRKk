@@ -67,6 +67,12 @@ class AlterService(falcon.API):
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
 
+        self.db = dbmgr.database
+        self.db.connect(reuse_if_open=True)
+
+    # def __del__(self):
+    # self.db.close()
+
     def start(self):
         """ A hook to when a Gunicorn worker calls run()."""
         pass
@@ -78,7 +84,6 @@ class AlterService(falcon.API):
     def __patch_oauth_callback_url__(self):
         for cfg in self.cfg.social_config.sites_list:
             cfg[3]['redirect_uri'] = '/api/'.join([self.cfg.social_config.base_url, cfg[3]['redirect_uri']])
-
 
 
 ### asd

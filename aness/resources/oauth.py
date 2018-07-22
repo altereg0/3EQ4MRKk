@@ -15,8 +15,9 @@ from peewee import IntegrityError
 from socialoauth import SocialSites
 from socialoauth.exception import SocialAPIError
 from aness.helpers import generate_user_token
+from aness.schemas import UserSchema
 
-from marshmallow_jsonapi import Schema, fields
+from marshmallow_jsonapi import fields, Schema
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.normpath(os.path.join(CURRENT_PATH, '..')))
@@ -32,6 +33,7 @@ class OAuthBaseResource(BaseResource):
         # patch url
         self.social_sites = SocialSites(cfg.sites_list)
         self.base_url = cfg.base_url
+        self.schema = UserSchema()
 
 
 class OAuthResource(OAuthBaseResource):
@@ -90,8 +92,9 @@ class CallbackResource(OAuthBaseResource):
         #
         # storage.set_user(UID, site_name=s.site_name, uid=s.uid, name=s.name, avatar=s.avatar)
         try:
-            user = Users(provider=provider, name=s.name, uid=s.uid)
-            with self.db:
+            unresult = self.schema.load(data={'provider': provider, 'name': s.name, 'uid': s.uid}, many=False)
+            user = unresult.data
+            with self.db.atomic():
                 user.save()
         except IntegrityError as e:
             raise falcon.HTTPBadRequest('User creation error', 'Cannot save user in database')

@@ -5,10 +5,7 @@ falcon
 falcon-cors
 marshmallow
 marshmallow_jsonapi
-#pymongo
 peewee
 tox
 aumbry[yaml]
-sqlalchemy
-jsonschema
 docopt

@@ -1,11 +1,11 @@
 from peewee import *
 
-database_persistent = SqliteDatabase(None)
-
+# db = SqliteDatabase(None)
+db = Proxy()
 
 class BaseModel(Model):
     class Meta:
-        database = database_persistent
+        database = db
 
 
 class Categories(BaseModel):
@@ -13,8 +13,8 @@ class Categories(BaseModel):
     parent = ForeignKeyField('self', db_column='parent_id', rel_model='self', to_field='id', null=True)
     url = TextField(null=True)
 
-    class Meta:
-        db_table = 'categories'
+    # class Meta:
+    #     db_table = 'categories'
 
 
 class Items(BaseModel):
@@ -28,9 +28,9 @@ class Items(BaseModel):
     comment = TextField(null=True)
     active = BooleanField(default=True)
     price = FloatField(default=0.0)
-
-    class Meta:
-        db_table = 'items'
+    #
+    # class Meta:
+    #     db_table = 'items'
 
 
 class Images(BaseModel):
@@ -41,8 +41,8 @@ class Images(BaseModel):
     timestamp = TimestampField(null=True)
     url = TextField(null=True)
 
-    class Meta:
-        db_table = 'images'
+    # class Meta:
+    #     db_table = 'images'
 
 
 class Pages(BaseModel):
@@ -50,8 +50,8 @@ class Pages(BaseModel):
     status_code = IntegerField(null=True)
     timestamp = TimestampField(null=True)
 
-    class Meta:
-        db_table = 'pages'
+    # class Meta:
+    #     db_table = 'pages'
 
 
 class Users(BaseModel):
@@ -59,8 +59,8 @@ class Users(BaseModel):
     provider = FixedCharField(8)
     uid = CharField(16)
 
-    class Meta:
-        db_table = 'users'
+    # class Meta:
+    #     db_table = 'users'
 
 # class SqliteSequence(BaseModel):
 #     name = UnknownField(null=True)  #
@@ -69,3 +69,5 @@ class Users(BaseModel):
 #     class Meta:
 #         db_table = 'sqlite_sequence'
 #         primary_key = False
+
+MODELS = (Categories, Items, Images, Pages, Users)
