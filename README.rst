@@ -1,7 +1,12 @@
-Example Falcon Service
+Example Falcon App
 =======================
 
-lorem
+Build
+-----
+Make it with Travis-CI
+
+.. image:: https://travis-ci.org/altereg0/3EQ4MRKk.svg?branch=master
+    :target: https://travis-ci.org/altereg0/3EQ4MRKk
 
 Installation
 ------------
