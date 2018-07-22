@@ -15,17 +15,17 @@ From the cloned source, execute:
 
 .. code-block:: shell
 
-    pip install -e .
+    pip setup.py develop
 
 Running
 -------
 
-Once installed you can run the service using the ``falcon-example`` command.
+Once installed you can run the service using the ``aness`` command.
 
 .. note::
 
-    The service connects to a MySQL database. You'll need to edit the service
-    config in ``etc/example/config.yml`` to match your configuration.
+    The service connects to a SQLite database. You'll need to edit the service
+    config in ``etc/config.yml`` to match your configuration.
 
 Running Tests
 -------------
