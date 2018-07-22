@@ -11,7 +11,7 @@ install:
 
 script:
   - nosetests
-  - coverage run nosetests
+  - coverage run
 
 after_success:
   - codecov --token=7f074403-e334-4996-8f09-ebf77c4e593d
