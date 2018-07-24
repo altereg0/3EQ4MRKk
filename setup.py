@@ -21,7 +21,6 @@ REQUIRED = [
     'docopt>=0.6.2',
     'peewee',
     'aumbry[yaml]>=0.7.0',
-    'peppercorn',
     'marshmallow',
     'marshmallow-jsonapi',
     'pyjwt'
