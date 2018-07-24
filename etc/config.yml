@@ -19,7 +19,14 @@
   wsgiref:
     host: 127.0.0.1
     port: 8001
-  secret: "b042cd6b222c1de10bc3432c6bdad55194d0467ee13a2150d7d9e28d9dfe894d"
+  security:
+    token_prefix: "JWT"
+    token_expiry: 3600
+    tokens_leeway: 0
+    tokens_authorize_endpoint: "/auth"
+    tokens_enable_refresh: true
+    tokens_refresh_endpoint: "auth/refresh"
+    secret: "b042cd6b222c1de10bc3432c6bdad55194d0467ee13a2150d7d9e28d9dfe894d"
 
 #oauth config
   social_config:
@@ -39,8 +46,8 @@
         - socialoauth.sites.github.Github
         - Github
         - redirect_uri: oauth/github
-          client_id: bc28b3f7273bf2397f_fake
-          client_secret: cbp2397fh23f293h9f2983hf_fake
+          client_id: 4f131f2e1304ec60d7c1
+          client_secret: 0de4ac8b7319c75d10a3c40226e2b3a0caecaccd
           scope:
             - user
       -
