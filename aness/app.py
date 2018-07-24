@@ -3,6 +3,7 @@ import falcon
 from aness.db.pw import PeeweeDBManager
 from aness.middleware.context import ContextMiddleware
 from aness.middleware.security import SecurityMiddlware
+from aness.middleware.peewee import PeeweeConnectionMiddleware
 from aness.resources import message, index, user, oauth
 from falcon.testing import SimpleTestResource
 
@@ -20,7 +21,7 @@ class SinkAdapter(object):
 class SuccessAdapter(object):
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
-        resp.content_type = 'text/html'
+        resp.content_type = falcon.MEDIA_HTML
         with open('web/public/success.html', 'r') as f:
             resp.body = f.read()
 
@@ -33,8 +34,12 @@ class AlterRequest(falcon.Request):
 
 class AlterService(falcon.API):
     def __init__(self, cfg):
+        contextMiddleWare = ContextMiddleware()
+        securityMiddleware = SecurityMiddlware()
+        peeweeMiddleware = PeeweeConnectionMiddleware()
+
         super(AlterService, self).__init__(
-            middleware=[ContextMiddleware(), SecurityMiddlware()],
+            middleware=[contextMiddleWare, securityMiddleware, peeweeMiddleware],
             request_type=AlterRequest
         )
 
@@ -54,6 +59,9 @@ class AlterService(falcon.API):
         self.add_route('/api/users', user.UserCollectionResource(dbmgr))
         self.add_route('/api/users/{id}', user.UserResource(dbmgr))
 
+        self.add_route('/api/profiles', user.UserCollectionResource(dbmgr))
+        self.add_route('/api/profiles/{id}', user.UserResource(dbmgr))
+
         self.add_route('/api/messages', message.MessageCollectionResource(dbmgr))
         self.add_route('/api/messages/{id}', message.MessageResource(dbmgr))
 
@@ -67,11 +75,10 @@ class AlterService(falcon.API):
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
 
-        self.db = dbmgr.database
-        self.db.connect(reuse_if_open=True)
+        peeweeMiddleware.setup_database(dbmgr.database)
+        securityMiddleware.setup_config(cfg.security)
 
-    # def __del__(self):
-    # self.db.close()
+        # self.db.connect(reuse_if_open=True)
 
     def start(self):
         """ A hook to when a Gunicorn worker calls run()."""
