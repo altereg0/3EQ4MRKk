@@ -4,6 +4,7 @@ from aness.db import models
 from aness.resources import BaseResource
 from aness.schemas import UserSchema
 
+from aness.helpers import token_required
 
 class UserCollectionResource(BaseResource):
 
@@ -30,12 +31,13 @@ class UserCollectionResource(BaseResource):
 
 class UserResource(BaseResource):
 
+    @token_required
     def on_get(self, req, resp, id):
+        model_list = models.Users.get_or_none(models.Users.id == id)
+        userSchema = UserSchema(many=False)
+        unresult = userSchema.dump(model_list)
         resp.status = falcon.HTTP_200
-        resp.media = {"id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King",
-                      "title": "VP of Marketing", "department": "Marketing", "cellPhone": "617-000-0002",
-                      "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA",
-                      "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"}
+        resp.media = unresult.data
 
     def on_post(self, req, resp):
         resp.status = falcon.HTTP_200

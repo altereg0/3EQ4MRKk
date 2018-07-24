@@ -2,20 +2,17 @@
 
 import os
 import sys
-import json
 import falcon
 from string import Template
 
-from aness.db import models
 from aness.resources import BaseResource
-from aness.schemas import UserSchema
 
-from aness.db.models import Users
 from peewee import IntegrityError
 from socialoauth import SocialSites
 from socialoauth.exception import SocialAPIError
-from aness.helpers import generate_user_token
+# from aness.helpers import generate_user_token
 from aness.schemas import UserSchema
+from aness.db.models import Users
 
 from marshmallow_jsonapi import fields, Schema
 
@@ -24,7 +21,8 @@ sys.path.append(os.path.normpath(os.path.join(CURRENT_PATH, '..')))
 
 IMAGE_PATH = os.path.join(CURRENT_PATH, 'images')
 
-SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localStorage.setItem("token", "$token"); window.close();</script></head><body></body></html>'
+# SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localStorage.setItem("application.token", {"foo":"$token"}); window._foo = "bar"; window.close();</script></head><body></body></html>'
+# SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">window._token="$token"; window.close();</script></head><body></body></html>'
 
 
 class OAuthBaseResource(BaseResource):
@@ -33,7 +31,6 @@ class OAuthBaseResource(BaseResource):
         # patch url
         self.social_sites = SocialSites(cfg.sites_list)
         self.base_url = cfg.base_url
-        self.schema = UserSchema()
 
 
 class OAuthResource(OAuthBaseResource):
@@ -47,12 +44,11 @@ class OAuthResource(OAuthBaseResource):
         return dict(id=_s.ID, name=_s.site_name, title=_s.site_name_zh, url=_s.authorize_url)
 
     def on_get(self, req, resp):
-        resp.status = falcon.HTTP_200
-        # resp.body = 'Server works! Mememe Plus reload '
         links = tuple(map(self._link, self.social_sites.list_sites_class()))
-        # mimetypes.common_types.html
         oauth_schema = OAuthEntitySchema()
-        resp.body = json.dumps(oauth_schema.format_json_api_response(links, True))
+        unresult = oauth_schema.format_json_api_response(links, True)
+        resp.status = falcon.HTTP_200
+        resp.media = unresult
 
     def on_post(self, req, resp):
         resp.status = falcon.HTTP_200
@@ -83,26 +79,32 @@ class CallbackResource(OAuthBaseResource):
                                           description,
                                           challenges,
                                           href='http://docs.example.com/auth')
-
-        # retrive and store: uid, name, avatar...
-        # storage = UserStorage()
-        # UID = storage.get_uid(s.site_name, s.uid)
-        # if not UID:
-        #     UID = storage.bind_new_user(s.site_name, s.uid)
-        #
-        # storage.set_user(UID, site_name=s.site_name, uid=s.uid, name=s.name, avatar=s.avatar)
-        try:
-            unresult = self.schema.load(data={'provider': provider, 'name': s.name, 'uid': s.uid}, many=False)
+        # Ищем пользователя
+        userSchema = UserSchema(many=False)
+        user = Users.get_or_none(Users.uid == '{}'.format(s.uid), Users.provider == provider)
+        if user is None:
+            mock = {
+                'data': {
+                    'type': 'user',
+                    'attributes': {
+                        'provider': provider, 'name': s.name, 'uid': '{}'.format(s.uid)
+                    }
+                }
+            }
+            unresult = userSchema.load(mock, many=False)
             user = unresult.data
-            with self.db.atomic():
-                user.save()
-        except IntegrityError as e:
-            raise falcon.HTTPBadRequest('User creation error', 'Cannot save user in database')
+            try:
+                with self.db.atomic():
+                    user.save()
+            except IntegrityError as e:
+                raise falcon.HTTPBadRequest('User creation error', 'Cannot save user in database')
 
-        token = generate_user_token(user).decode()
-        resp.status = falcon.HTTP_OK
-        resp.content_type = 'text/html'
-        resp.body = Template(SUCCESS_TPL).substitute(token=token)
+        # token = generate_user_token(user).decode()
+        userDump = userSchema.dump(user)
+        resp.context.update({'user': userDump.data})
+        # resp.status = falcon.HTTP_OK
+        # resp.content_type = falcon.MEDIA_HTML
+        # resp.body = Template(SUCCESS_TPL).substitute(token=token)
 
 
 class OAuthEntitySchema(Schema):
