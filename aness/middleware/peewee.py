@@ -7,7 +7,9 @@ class PeeweeConnectionMiddleware(object):
         self.db = SqliteDatabase(None)
 
     def process_request(self, req, resp):
-        self.db.connect(reuse_if_open=True)
+        # self.db.connect(reuse_if_open=True)
+        # finally read the manual :)
+        self.db.connection()
 
     def process_response(self, req, resp, resource):
         # TODO: Проблема БД с типом :memory:
