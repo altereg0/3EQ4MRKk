@@ -16,9 +16,6 @@ class AppTestCase(testing.TestCase):
         # self.app = myapp.create()
         # self.mysqld = self.Mysqld()
 
-        # cfg = AppConfig()
-        # cfg.db.connection = self.mysqld.url()
-
         cfg = aumbry.load(
             aumbry.FILE,
             AppConfig,
@@ -26,9 +23,7 @@ class AppTestCase(testing.TestCase):
                 'CONFIG_FILE_PATH': './etc/config.yml'
             }
         )
-        # self.app = TestApp(cfg, MyService)
         self.app = AlterService(cfg)
-        # self.app.db.
 
     def tearDown(self):
         # self.mysqld.stop()
@@ -43,10 +38,6 @@ class AppTestCase(testing.TestCase):
     def tearDownClass(cls):
         # cls.Mysqld.clear_cache()
         pass
-
-    @property
-    def db(self):
-        return self.app.db
 
     def get_headers(self, headers):
         all_headers = {}

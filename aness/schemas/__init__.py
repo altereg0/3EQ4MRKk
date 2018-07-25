@@ -83,13 +83,13 @@ class AdvertSchema(Schema):
                                  include_resource_linkage=False)
     # timestamp = OlxTimeStampConverted()
     timestamp = fields.LocalDateTime('%Y%m%d%H%M%S', dump_only=True)
-    key = fields.Method('OlxKeyGenerated', dump_only=True)
+    key = fields.Method('ExampleKeyGenerated', dump_only=True)
 
     class Meta:
         type_ = 'advert'
         additional = ('id',)
 
-    def OlxKeyGenerated(self, obj):
+    def ExampleKeyGenerated(self, obj):
         return ''.join(('@', str(obj.item)))
 
     @post_load
