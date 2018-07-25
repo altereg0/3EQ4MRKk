@@ -10,10 +10,9 @@ class PeeweeDBManager(object):
     def __init__(self, connection=None):
         self.connection = connection
         # proxy initialization
-        # self.database = SqliteDatabase(self.connection)
         self.database = SqliteDatabase(self.connection,
-                                       thread_safe=False,
-                                       check_same_thread=False,
+                                       # thread_safe=False,
+                                       # check_same_thread=False,
                                        pragmas={
                                            'journal_mode': 'wal',
                                            'cache_size': -1 * 64000,  # 64MB

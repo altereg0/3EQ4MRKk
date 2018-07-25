@@ -3,9 +3,19 @@ from peewee import *
 # db = SqliteDatabase(None)
 db = Proxy()
 
+
 class BaseModel(Model):
     class Meta:
         database = db
+
+
+class Users(BaseModel):
+    name = CharField()
+    provider = FixedCharField(8)
+    uid = CharField(16)
+
+    # class Meta:
+    #     db_table = 'users'
 
 
 class Categories(BaseModel):
@@ -17,26 +27,20 @@ class Categories(BaseModel):
     #     db_table = 'categories'
 
 
-class Items(BaseModel):
-    category = ForeignKeyField(Categories, db_column='category_id', null=True, rel_model=Categories, to_field='id')
-    description = TextField(null=True)
-    details = TextField(null=True)
-    item = IntegerField(db_column='item_id')
-    timestamp = TimestampField(null=True)
+class Adverts(BaseModel):
     title = TextField(null=True)
+    description = TextField(null=True)
+    timestamp = TimestampField(null=True)
     url = TextField(null=True)
-    comment = TextField(null=True)
     active = BooleanField(default=True)
     price = FloatField(default=0.0)
+    author = ForeignKeyField(Users, db_column='user_id', null=False, rel_model=Users, to_field='id')
     #
     # class Meta:
     #     db_table = 'items'
 
 
 class Images(BaseModel):
-    filename = TextField(null=True)
-    item = ForeignKeyField(Items, db_column='item_id', rel_model=Items, to_field='item')
-    path = TextField(null=True)
     status_code = IntegerField(null=True)
     timestamp = TimestampField(null=True)
     url = TextField(null=True)
@@ -53,21 +57,4 @@ class Pages(BaseModel):
     # class Meta:
     #     db_table = 'pages'
 
-
-class Users(BaseModel):
-    name = CharField()
-    provider = FixedCharField(8)
-    uid = CharField(16)
-
-    # class Meta:
-    #     db_table = 'users'
-
-# class SqliteSequence(BaseModel):
-#     name = UnknownField(null=True)  #
-#     seq = UnknownField(null=True)  #
-#
-#     class Meta:
-#         db_table = 'sqlite_sequence'
-#         primary_key = False
-
-MODELS = (Categories, Items, Images, Pages, Users)
+MODELS = (Categories, Adverts, Images, Pages, Users)
