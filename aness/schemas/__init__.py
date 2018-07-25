@@ -7,7 +7,7 @@ from marshmallow_jsonapi import Schema, fields
 
 from marshmallow.validate import Range
 
-from aness.db.models import Users
+from aness.db.models import Users, Adverts
 
 hostname = 'etagy.retla.net'
 
@@ -25,7 +25,6 @@ class UserSchema(Schema):
     @post_load
     def make_user(self, data):
         return Users(**data)
-        # return Users.create(**data)
 
 
 class GMT3(tzinfo):
@@ -58,34 +57,41 @@ class OlxTimeStampConverted(fields.Field):
         return ret
 
 
-class OlxImageSchema(Schema):
-    filename = OlxImageFileName()
-    url = fields.Url()
-    loc = fields.Method('OlxImageUrlConverted', dump_only=True)
+class ImageSchema(Schema):
+    src = fields.Url()
 
     class Meta:
+        type_ = 'image'
         additional = ('id',)
 
     def OlxImageUrlConverted(self, obj):
-        _file = ret = Path(obj.filename)
+        _file = Path(obj.filename)
         ret = urlunparse(
-            ('http', hostname, 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
+            ('https', hostname, 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
         return ret
 
 
-class OlxItemSchema(Schema):
-    item = fields.Integer(dump_only=True)
-    images_set = fields.Nested(OlxImageSchema, many=True, dump_only=True, dump_to='images')
-    url = fields.Url()
+class AdvertSchema(Schema):
+    id = fields.Integer(dump_only=True)
     title = fields.String()
+    images_set = fields.Relationship(schema=ImageSchema, many=True, dump_only=True, dump_to='images')
     description = fields.String()
-    details = fields.String()
+    author = fields.Relationship(schema=UserSchema,
+                                 type_='user',
+                                 related_url='/users/{author_id}',
+                                 related_url_kwargs={'author_id': '<author.id>'},
+                                 include_resource_linkage=False)
     # timestamp = OlxTimeStampConverted()
-    timestamp = fields.LocalDateTime('%Y%m%d%H%M%S')
-    key = fields.Method('OlxKeyGenerated')
+    timestamp = fields.LocalDateTime('%Y%m%d%H%M%S', dump_only=True)
+    key = fields.Method('OlxKeyGenerated', dump_only=True)
 
     class Meta:
+        type_ = 'advert'
         additional = ('id',)
 
     def OlxKeyGenerated(self, obj):
-        return ''.join(('olx', str(obj.item)))
+        return ''.join(('@', str(obj.item)))
+
+    @post_load
+    def make_advert(self, data):
+        return Adverts(**data)

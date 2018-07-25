@@ -4,7 +4,7 @@ from aness.db.pw import PeeweeDBManager
 from aness.middleware.context import ContextMiddleware
 from aness.middleware.security import SecurityMiddlware
 from aness.middleware.peewee import PeeweeConnectionMiddleware
-from aness.resources import message, index, user, oauth
+from aness.resources import adverts, index, users, oauth
 from falcon.testing import SimpleTestResource
 
 
@@ -34,12 +34,12 @@ class AlterRequest(falcon.Request):
 
 class AlterService(falcon.API):
     def __init__(self, cfg):
-        contextMiddleWare = ContextMiddleware()
-        securityMiddleware = SecurityMiddlware()
-        peeweeMiddleware = PeeweeConnectionMiddleware()
+        context_middleWare = ContextMiddleware()
+        security_middleware = SecurityMiddlware()
+        peewee_middleware = PeeweeConnectionMiddleware()
 
         super(AlterService, self).__init__(
-            middleware=[contextMiddleWare, securityMiddleware, peeweeMiddleware],
+            middleware=[context_middleWare, security_middleware, peewee_middleware],
             request_type=AlterRequest
         )
 
@@ -56,14 +56,14 @@ class AlterService(falcon.API):
         self.add_route('/api', index.IndexResource(dbmgr))
         self.add_route('/api/index', index.IndexResource(dbmgr))
 
-        self.add_route('/api/users', user.UserCollectionResource(dbmgr))
-        self.add_route('/api/users/{id}', user.UserResource(dbmgr))
+        self.add_route('/api/users', users.UserCollectionResource(dbmgr))
+        self.add_route('/api/users/{id}', users.UserResource(dbmgr))
 
-        self.add_route('/api/profiles', user.UserCollectionResource(dbmgr))
-        self.add_route('/api/profiles/{id}', user.UserResource(dbmgr))
+        self.add_route('/api/profiles', users.UserCollectionResource(dbmgr))
+        self.add_route('/api/profiles/{id}', users.UserResource(dbmgr))
 
-        self.add_route('/api/messages', message.MessageCollectionResource(dbmgr))
-        self.add_route('/api/messages/{id}', message.MessageResource(dbmgr))
+        self.add_route('/api/adverts', adverts.AdvertsCollectionResource(dbmgr))
+        self.add_route('/api/adverts/{id}', adverts.AdvertsResource(dbmgr))
 
         self.add_route('/api/oauth', oauth.OAuthResource(dbmgr, cfg.social_config))
         self.add_route('/api/oauth/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
@@ -75,8 +75,8 @@ class AlterService(falcon.API):
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
 
-        peeweeMiddleware.setup_database(dbmgr.database)
-        securityMiddleware.setup_config(cfg.security)
+        peewee_middleware.setup_database(dbmgr.database)
+        security_middleware.setup_config(self.cfg.security)
 
         # self.db.connect(reuse_if_open=True)
 
