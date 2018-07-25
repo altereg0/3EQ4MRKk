@@ -21,6 +21,7 @@ sys.path.append(os.path.normpath(os.path.join(CURRENT_PATH, '..')))
 
 IMAGE_PATH = os.path.join(CURRENT_PATH, 'images')
 
+
 # SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">localStorage.setItem("application.token", {"foo":"$token"}); window._foo = "bar"; window.close();</script></head><body></body></html>'
 # SUCCESS_TPL = '<!DOCTYPE html><html><head><script type="text/javascript">window._token="$token"; window.close();</script></head><body></body></html>'
 
@@ -49,10 +50,6 @@ class OAuthResource(OAuthBaseResource):
         unresult = oauth_schema.format_json_api_response(links, True)
         resp.status = falcon.HTTP_200
         resp.media = unresult
-
-    def on_post(self, req, resp):
-        resp.status = falcon.HTTP_200
-        resp.body = 'Server works!'
 
 
 class CallbackResource(OAuthBaseResource):
