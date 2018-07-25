@@ -34,11 +34,10 @@ class SecurityMiddlware(object):
         _token = auth[len(self.cfg.token_prefix):].strip()
         try:
             payload = self._decode(_token)
-            if not payload:
-                return False
-            else:
-                self.token = _token
+            if payload:
                 return True
+            else:
+                return False
         except:
             pass
         return False
@@ -83,14 +82,13 @@ class SecurityMiddlware(object):
             resp: Response object that will be routed to
                 the on_* responder.
         """
-        account_id = req.get_header('Account-ID')
+        # account_id = req.get_header('Account-ID')
 
         _check = dict()
+        _check['valid'] = False
 
         if self._verify_token(req.auth):
             _check['valid'] = True
-        else:
-            _check['valid'] = False
 
         req.context.update(_check)
 
