@@ -99,9 +99,8 @@ class CallbackResource(OAuthBaseResource):
         # token = generate_user_token(user).decode()
         userDump = userSchema.dump(user)
         resp.context.update({'user': userDump.data})
-        # resp.status = falcon.HTTP_OK
-        # resp.content_type = falcon.MEDIA_HTML
-        # resp.body = Template(SUCCESS_TPL).substitute(token=token)
+        resp.status = falcon.HTTP_OK
+
 
 
 class OAuthEntitySchema(Schema):

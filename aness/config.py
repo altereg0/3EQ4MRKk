@@ -43,6 +43,8 @@ class SecurityConfig(YamlConfig):
 
 class AppConfig(YamlConfig):
     __mapping__ = {
+        'app': Attr('app', str),
+        'api_version': Attr('api_version', str),
         'db': Attr('db', DatabaseWrapperConfig),
         'gunicorn': Attr('gunicorn', dict),
         'wsgiref': Attr('wsgiref', dict),
@@ -54,3 +56,5 @@ class AppConfig(YamlConfig):
         self.db = DatabaseConfig()
         self.gunicorn = {}
         self.social_oauth = {}
+        self.app = 'aness'
+        self.api = 'v_'

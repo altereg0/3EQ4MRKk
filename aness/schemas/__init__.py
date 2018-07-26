@@ -12,6 +12,14 @@ from aness.db.models import Users, Adverts
 hostname = 'etagy.retla.net'
 
 
+class IndexSchema(Schema):
+    id = fields.String(required=False)
+    document_meta = fields.DocumentMeta()
+    class Meta:
+        type_ = 'index'
+        strict = False
+        additional = ('id',)
+
 class UserSchema(Schema):
     id = fields.Integer(dump_only=True)
     name = fields.String()
@@ -45,13 +53,13 @@ class GMT3(tzinfo):
         return "GMT +3 Moscow"
 
 
-class OlxImageFileName(fields.Field):
+class ImageFileNameField(fields.Field):
     def _serialize(self, value, attr, obj):
         ret = Path(value)
         return ret.name
 
 
-class OlxTimeStampConverted(fields.Field):
+class TimeStampConvertedField(fields.Field):
     def _serialize(self, value, attr, obj):
         ret = value.strftime('%Y%m%d%H%M%S')
         return ret
@@ -64,7 +72,7 @@ class ImageSchema(Schema):
         type_ = 'image'
         additional = ('id',)
 
-    def OlxImageUrlConverted(self, obj):
+    def ImageUrlConverted(self, obj):
         _file = Path(obj.filename)
         ret = urlunparse(
             ('https', hostname, 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
@@ -81,7 +89,7 @@ class AdvertSchema(Schema):
                                  related_url='/users/{author_id}',
                                  related_url_kwargs={'author_id': '<author.id>'},
                                  include_resource_linkage=False)
-    # timestamp = OlxTimeStampConverted()
+    # timestamp = TimeStampConvertedField()
     timestamp = fields.LocalDateTime('%Y%m%d%H%M%S', dump_only=True)
     key = fields.Method('ExampleKeyGenerated', dump_only=True)
 

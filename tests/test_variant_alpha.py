@@ -10,7 +10,7 @@ from tests.helpers import app
 class TestUsersResource(app.AppTestCase):
     def test_can_create(self):
         post_req = self.post_json(
-            '/api/users',
+            'users',
             {
                 "data": {
                     "attributes": {
@@ -30,7 +30,7 @@ class TestUsersResource(app.AppTestCase):
         hmmm... should be more verbose output from 'green', but nope....
         """
         post_req = self.post_json(
-            '/api/users',
+            'users',
             {
                 "data": {
                     "attributes": {
@@ -44,14 +44,14 @@ class TestUsersResource(app.AppTestCase):
         )
         self.assertEqual(post_req.status_code, 201)
 
-        get_req = self.get('/api/users')
+        get_req = self.get('users')
         self.assertEqual(get_req.status_code, 200)
 
         users_list = get_req.json['data']
         self.assertEqual(len(users_list), 1)
 
         post_req = self.post_json(
-            '/api/users',
+            'users',
             {
                 "data": {
                     "attributes": {
@@ -65,25 +65,25 @@ class TestUsersResource(app.AppTestCase):
         )
         self.assertEqual(post_req.status_code, 201)
 
-        get_req = self.get('/api/users')
+        get_req = self.get('users')
         self.assertEqual(get_req.status_code, 200)
 
         users_list = get_req.json['data']
         self.assertEqual(len(users_list), 2)
 
     def test_api(self):
-        get_req = self.get('/api')
+        get_req = self.get('')
         self.assertEqual(get_req.status_code, 200)
 
         media = get_req.json
-        self.assertEqual(media['foo'], 'bar')
+        self.assertEqual(media['data']['id'], get_req.headers['REQUEST-ID'])
 
 
 class TestAdvertResource(app.AppTestCase):
     def test_can_create(self):
         """Test ADVERT resource"""
         post_req = self.post_json(
-            '/api/users',
+            'users',
             {
                 "data": {
                     "attributes": {
@@ -99,7 +99,7 @@ class TestAdvertResource(app.AppTestCase):
         self.assertEqual(post_req.json.get('id'), 1)
 
         post_req = self.post_json(
-            '/api/adverts',
+            'adverts',
             {
                 "data": {
                     "relationships": {
@@ -126,7 +126,7 @@ class TestAdvertResource(app.AppTestCase):
         hmmm... should be more verbose output from 'green', but nope....
         """
         post_req = self.post_json(
-            '/api/users',
+            'users',
             {
                 "data": {
                     "attributes": {
@@ -142,7 +142,7 @@ class TestAdvertResource(app.AppTestCase):
         self.assertEqual(post_req.json.get('id'), 1)
 
         post_req = self.post_json(
-            '/api/adverts',
+            'adverts',
             {
                 "data": {
                     "relationships": {
@@ -165,7 +165,7 @@ class TestAdvertResource(app.AppTestCase):
         self.assertEqual(post_req.json.get('id'), 1)
 
         post_req = self.post_json(
-            '/api/adverts',
+            'adverts',
             {
                 "data": {
                     "relationships": {
@@ -187,7 +187,7 @@ class TestAdvertResource(app.AppTestCase):
         self.assertEqual(post_req.status_code, 201)
         self.assertEqual(post_req.json.get('id'), 2)
 
-        get_req = self.get('/api/adverts')
+        get_req = self.get('adverts')
         self.assertEqual(get_req.status_code, 200)
 
         adverts_list = get_req.json['data']

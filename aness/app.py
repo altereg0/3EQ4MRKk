@@ -6,7 +6,7 @@ from aness.middleware.security import SecurityMiddlware
 from aness.middleware.peewee import PeeweeConnectionMiddleware
 from aness.resources import adverts, index, users, oauth
 from falcon.testing import SimpleTestResource
-
+from aness.helpers import generate_path
 
 class SinkAdapter(object):
     def __call__(self, req, resp):
@@ -53,24 +53,24 @@ class AlterService(falcon.API):
         dbmgr.setup()
 
         # Alter routes
-        self.add_route('/api', index.IndexResource(dbmgr))
-        self.add_route('/api/index', index.IndexResource(dbmgr))
+        self.add_route('', index.IndexResource(dbmgr))
+        self.add_route('index', index.IndexResource(dbmgr))
 
-        self.add_route('/api/users', users.UserCollectionResource(dbmgr))
-        self.add_route('/api/users/{id}', users.UserResource(dbmgr))
+        self.add_route('users', users.UserCollectionResource(dbmgr))
+        self.add_route('users/{id}', users.UserResource(dbmgr))
 
-        self.add_route('/api/profiles', users.UserCollectionResource(dbmgr))
-        self.add_route('/api/profiles/{id}', users.UserResource(dbmgr))
+        self.add_route('profiles', users.UserCollectionResource(dbmgr))
+        self.add_route('profiles/{id}', users.UserResource(dbmgr))
 
-        self.add_route('/api/adverts', adverts.AdvertsCollectionResource(dbmgr))
-        self.add_route('/api/adverts/{id}', adverts.AdvertsResource(dbmgr))
+        self.add_route('adverts', adverts.AdvertsCollectionResource(dbmgr))
+        self.add_route('adverts/{id}', adverts.AdvertsResource(dbmgr))
 
-        self.add_route('/api/oauth', oauth.OAuthResource(dbmgr, cfg.social_config))
-        self.add_route('/api/oauth/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
+        self.add_route('oauth', oauth.OAuthResource(dbmgr, cfg.social_config))
+        self.add_route('oauth/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
 
-        self.add_route('/api/oauth/success', SuccessAdapter())
+        self.add_route('oauth/success', SuccessAdapter())
 
-        self.add_route('/mock', SimpleTestResource(falcon.HTTP_200, json={"foo": "bar"}))
+        self.add_route('mock', SimpleTestResource(falcon.HTTP_200, json={"foo": "bar"}))
 
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
@@ -79,6 +79,10 @@ class AlterService(falcon.API):
         security_middleware.setup_config(self.cfg.security)
 
         # self.db.connect(reuse_if_open=True)
+
+    def add_route(self, uri_template, resource, *args, **kwargs):
+        _url = generate_path('api', self.cfg.api_version, uri_template)
+        super(AlterService, self).add_route(_url, resource, *args, **kwargs)
 
     def start(self):
         """ A hook to when a Gunicorn worker calls run()."""

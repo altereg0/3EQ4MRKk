@@ -1,6 +1,7 @@
 #base config
 ---
   app: "aness"
+  api_version: "v1"
   db:
     sa:
       #    SqlAlchemy - The sqlite :memory: identifier is the default if no filepath is present. Specify sqlite:// and nothing else:

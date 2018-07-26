@@ -12,3 +12,6 @@ def token_required(func):
         return func(*args, **kwargs)
 
     return f
+
+def generate_path(prefix, api_version, resource):
+    return '/{prefix:s}/{api:s}/{resource:s}'.format(prefix=prefix, api=api_version, resource=resource)

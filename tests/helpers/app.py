@@ -5,7 +5,7 @@ import aumbry
 from aness.app import AlterService
 from aness.config import AppConfig
 from falcon import testing
-
+from aness.helpers import  generate_path
 
 class AppTestCase(testing.TestCase):
     def setUp(self):
@@ -24,10 +24,15 @@ class AppTestCase(testing.TestCase):
             }
         )
         self.app = AlterService(cfg)
+        self.api_version = cfg.api_version
+        self.prefix = 'api'
 
     def tearDown(self):
         # self.mysqld.stop()
         pass
+
+    def _path(self, uri_template):
+        return generate_path(self.prefix, self.api_version, uri_template)
 
     @classmethod
     def setUpClass(cls):
@@ -49,14 +54,14 @@ class AppTestCase(testing.TestCase):
 
     def get(self, path, params=None, headers=None):
         return self.simulate_get(
-            path,
+            self._path(path),
             params=params,
             headers=self.get_headers(headers)
         )
 
     def post(self, path, body=None, params=None, headers=None):
         return self.simulate_post(
-            path,
+            self._path(path),
             body=body,
             params=params,
             headers=self.get_headers(headers)
@@ -64,7 +69,7 @@ class AppTestCase(testing.TestCase):
 
     def put(self, path, body=None, params=None, headers=None):
         return self.simulate_put(
-            path,
+            self._path(path),
             body=body,
             params=params,
             headers=self.get_headers(headers)
@@ -72,10 +77,14 @@ class AppTestCase(testing.TestCase):
 
     def delete(self, path, params=None, headers=None):
         return self.simulate_delete(
-            path,
+            self._path(path),
             params=params,
             headers=self.get_headers(headers)
         )
 
     def post_json(self, path, body, params=None, headers=None):
-        return self.post(path, json.dumps(body), params, headers)
+        return self.post(
+            path,
+            json.dumps(body),
+            params,
+            headers)
