@@ -13,6 +13,9 @@
     connection: ""
   gunicorn:
     bind: 127.0.0.1:8001
+#    bind: "unix:/tmp/aness.sock"
+#    user: "www-data"
+#    group: "www-data"
     workers: 1
     threads: 4
     timeout: 30

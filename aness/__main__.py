@@ -28,6 +28,7 @@ formatter = logging.Formatter('%(asctime)s|%(levelname)s|%(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+
 class CustomWorker(SyncWorker):
     def handle_quit(self, sig, frame):
         self.app.application.stop(sig)
@@ -94,3 +95,6 @@ def main():
         logger.warning('Running WSGIref server by default')
         run_wsgiref(app, cfg)
 
+
+if __name__ == "__main__":
+    main()

@@ -29,7 +29,7 @@ class AppTestCase(testing.TestCase):
         self.prefix = 'api'
 
     def tearDown(self):
-        # self.mysqld.stop()
+        # Shutdown database connection
         pass
 
     def _path(self, uri_template):

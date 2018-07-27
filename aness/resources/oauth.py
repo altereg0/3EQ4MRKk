@@ -78,7 +78,7 @@ class CallbackResource(OAuthBaseResource):
                                           href='http://docs.example.com/auth')
         # Ищем пользователя
         userSchema = UserSchema(many=False)
-        user = Users.get_or_none(Users.uid == '{}'.format(s.uid), Users.provider == provider)
+        user = Users.get_or_none(Users.uid == '{}'.format(s.uid), Users.social == provider)
         if user is None:
             mock = {
                 'data': {

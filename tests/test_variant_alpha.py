@@ -13,12 +13,12 @@ class TestUsersResource(app.AppTestCase):
             'users',
             {
                 "data": {
+                    "type": "user",
                     "attributes": {
-                        "name": "John Doe",
-                        "provider": "any",
-                        "uid": "cbi2345"
+                        "uid": "5772ccd2e6b14dd3",
+                        "social": "YELLOW",
+                        "name": "Дайна Аброськина"
                     },
-                    "type": "user"
                 }
             }
         )
@@ -33,12 +33,12 @@ class TestUsersResource(app.AppTestCase):
             'users',
             {
                 "data": {
+                    "type": "user",
                     "attributes": {
-                        "name": "John Doe",
-                        "provider": "any",
-                        "uid": "cbi2345"
+                        "uid": "90792532401de273",
+                        "social": "PURPLE",
+                        "name": "Екатерина Трошина"
                     },
-                    "type": "user"
                 }
             }
         )
@@ -54,12 +54,12 @@ class TestUsersResource(app.AppTestCase):
             'users',
             {
                 "data": {
+                    "type": "user",
                     "attributes": {
-                        "name": "Mary Jane",
-                        "provider": "any",
-                        "uid": "cb54321"
+                        "uid": "5868ca829b560a1d",
+                        "social": "BLUE",
+                        "name": "Инна Авдюшина"
                     },
-                    "type": "user"
                 }
             }
         )
@@ -86,12 +86,12 @@ class TestAdvertResource(app.AppTestCase):
             'users',
             {
                 "data": {
+                    "type": "user",
                     "attributes": {
-                        "name": "John Doe",
-                        "provider": "any",
-                        "uid": "cbi2345"
+                        "uid": "930605b7b42af0a4",
+                        "social": "PINK",
+                        "name": "Ася Токарева"
                     },
-                    "type": "user"
                 }
             }
         )
@@ -124,17 +124,18 @@ class TestAdvertResource(app.AppTestCase):
     def test_can_list(self):
         """
         hmmm... should be more verbose output from 'green', but nope....
+
         """
         post_req = self.post_json(
             'users',
             {
                 "data": {
+                    "type": "user",
                     "attributes": {
-                        "name": "John Doe",
-                        "provider": "any",
-                        "uid": "cbi2345"
+                        "uid": "fdb07ea6bf687872",
+                        "social": "PINK",
+                        "name": "Артур Горбунов"
                     },
-                    "type": "user"
                 }
             }
         )
@@ -156,39 +157,16 @@ class TestAdvertResource(app.AppTestCase):
                     "type": "advert",
                     "attributes": {
                         "title": "Aves",
-                        "description": "Anything cools"
+                        "description": "Институциализация формирует диссон\
+                        ансный постиндустриализм, о чем будет подробнее ска\
+                        зано ниже. Полифонический роман приводит современн\
+                        ый контрапункт. М.М.Бахтин понимал тот факт, что д\
+                        рама диссонирует феномен толпы, подчеркивает прези\
+                        дент. Понятие тоталитаризма ограничивает антрополо\
+                        гический пастиш."
                     }
                 }
             }
         )
         self.assertEqual(post_req.status_code, 201)
         self.assertEqual(post_req.json.get('id'), 1)
-
-        post_req = self.post_json(
-            'adverts',
-            {
-                "data": {
-                    "relationships": {
-                        "author": {
-                            "data": {
-                                "type": "user",
-                                "id": "1"
-                            }
-                        }
-                    },
-                    "type": "advert",
-                    "attributes": {
-                        "title": "Aves",
-                        "description": "Anything cools"
-                    }
-                }
-            }
-        )
-        self.assertEqual(post_req.status_code, 201)
-        self.assertEqual(post_req.json.get('id'), 2)
-
-        get_req = self.get('adverts')
-        self.assertEqual(get_req.status_code, 200)
-
-        adverts_list = get_req.json['data']
-        self.assertEqual(len(adverts_list), 2)

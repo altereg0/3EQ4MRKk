@@ -6,7 +6,8 @@ from aness.middleware.security import SecurityMiddlware
 from aness.middleware.peewee import PeeweeConnectionMiddleware
 from aness.resources import adverts, index, users, oauth
 from falcon.testing import SimpleTestResource
-from aness.helpers import generate_path
+from aness.helpers import generate_path, FuckingFactory
+
 
 class SinkAdapter(object):
     def __call__(self, req, resp):
@@ -30,6 +31,14 @@ class AlterRequest(falcon.Request):
     def __init__(self, env, options=None):
         super(AlterRequest, self).__init__(env, options)
         self.token = None
+
+
+class AlterMockResource(SimpleTestResource):
+    def on_get(self, req, resp, **kwargs):
+        parame = dict()
+        for k, v in req.params.items():
+            parame[k] = int(v)
+        FuckingFactory.generate_mock_data(**parame)
 
 
 class AlterService(falcon.API):
@@ -70,7 +79,7 @@ class AlterService(falcon.API):
 
         self.add_route('oauth/success', SuccessAdapter())
 
-        self.add_route('mock', SimpleTestResource(falcon.HTTP_200, json={"foo": "bar"}))
+        self.add_route('mock', AlterMockResource(falcon.HTTP_200, json={"mischief": "managed"}))
 
         sink = SinkAdapter()
         self.add_sink(sink, r'/')
@@ -79,7 +88,7 @@ class AlterService(falcon.API):
         security_middleware.setup_config(self.cfg.security)
 
         # self.db.connect(reuse_if_open=True)
-
+        # FuckingFactory.generate_mock_data(100, 500)
 
     def add_route(self, uri_template, resource, *args, **kwargs):
         _url = generate_path('api', self.cfg.api_version, uri_template)

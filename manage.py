@@ -15,16 +15,13 @@ from wsgiref import simple_server
 from aness.app import AlterService
 from aness.config import AppConfig
 
-# Set up falcon api
-# app = application = create_app()
-
 docopt(__doc__)
 
 cfg = aumbry.load(
     aumbry.FILE,
     AppConfig,
     {
-        'CONFIG_FILE_PATH': './etc/aness/config.yml'
+        'CONFIG_FILE_PATH': './etc/config.yml'
     }
 )
 

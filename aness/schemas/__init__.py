@@ -26,7 +26,7 @@ class IndexSchema(Schema):
 class UserSchema(Schema):
     id = fields.Integer(dump_only=True)
     name = fields.String()
-    provider = fields.String()
+    social = fields.String()
     uid = fields.String()
 
     class Meta:
@@ -80,7 +80,7 @@ class ImageSchema(Schema):
     def ImageUrlConverted(self, obj):
         _file = Path(obj.filename)
         ret = urlunparse(
-            ('https', hostname, 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
+            ('https', 'example.com', 'images/{:}/{:}'.format(_file.parent.name, _file.name), None, None, None))
         return ret
 
 
@@ -95,6 +95,7 @@ class AdvertSchema(Schema):
                                  related_url_kwargs={'author_id': '<author.id>'},
                                  include_resource_linkage=False)
     # timestamp = TimeStampConvertedField()
+    price = fields.Float()
     timestamp = fields.LocalDateTime('%Y%m%d%H%M%S', dump_only=True)
     key = fields.Method('ExampleKeyGenerated', dump_only=True)
 

@@ -1,17 +1,26 @@
 from tests.helpers import app
-from aness.helpers import generate_mock_data
+from aness.helpers import FuckingFactory
+
+
 class AdvancedTestSuite(app.AppTestCase):
     """Advanced test cases."""
-    
+
     def setUp(self):
         super(AdvancedTestSuite, self).setUp()
-        self.num_accounts = 1000
-        generate_mock_data(num=self.num_accounts)
+        self.num_accounts = 50
+        self.num_adverts = 500
 
+        FuckingFactory.generate_mock_data(num_users=self.num_accounts, num_adverts=self.num_adverts)
 
-    def test_thoughts(self):
+    def test_mock_data(self):
         get_req = self.get('users')
         self.assertEqual(get_req.status_code, 200)
 
         users_list = get_req.json['data']
         self.assertEqual(len(users_list), self.num_accounts)
+
+        get_req = self.get('adverts')
+        self.assertEqual(get_req.status_code, 200)
+
+        users_list = get_req.json['data']
+        self.assertEqual(len(users_list), self.num_adverts)

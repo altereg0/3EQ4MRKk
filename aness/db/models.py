@@ -8,27 +8,29 @@ class BaseModel(Model):
     class Meta:
         database = db
 
-    @staticmethod
-    def _bootstrap(count=500, locale='ru'):
-        from mimesis import Person
-        obj = Person(locale)
-
-        for _ in range(count):
-            _new = __class__.__new__(obj)
-
-            try:
-                _new.save()
-            except IntegrityError:
-                pass
-
 
 class Users(BaseModel):
     name = CharField()
-    provider = FixedCharField(8)
+    social = FixedCharField(8)
     uid = CharField(16)
 
     # class Meta:
     #     db_table = 'users'
+    @staticmethod
+    def _bootstrap(locale='ru'):
+        from mimesis import Generic
+        gmock = Generic(locale)
+        gmocku = Generic('en')
+
+        _new = Users(
+            uid=gmock.cryptographic.token()[:16],
+            name=gmock.person.full_name(),
+            social=gmocku.text.color().upper()
+        )
+        try:
+            _new.save()
+        except IntegrityError as e:
+            pass
 
 
 class Categories(BaseModel):
