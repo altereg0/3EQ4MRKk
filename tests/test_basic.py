@@ -1,9 +1,8 @@
-from .context import app
+from tests.helpers import app
 from aness import __version__ as v
-import unittest
 
 
-class BasicTestSuite(unittest.TestCase):
+class BasicTestSuite(app.AppTestCase):
     """Basic test cases."""
 
     def test_version(self):
@@ -11,8 +10,6 @@ class BasicTestSuite(unittest.TestCase):
 
     def test_absolute_truth_and_meaning(self):
         self.assertTrue(True)
+        self.assertTrue(42)
+
         self.assertIsNotNone(app)
-
-
-if __name__ == '__main__':
-    unittest.main()

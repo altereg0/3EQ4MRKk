@@ -5,7 +5,8 @@ import aumbry
 from aness.app import AlterService
 from aness.config import AppConfig
 from falcon import testing
-from aness.helpers import  generate_path
+from aness.helpers import generate_path
+
 
 class AppTestCase(testing.TestCase):
     def setUp(self):

@@ -1,3 +1,5 @@
 flake8
 coverage
 pytest
+nose
+-r requirements.txt

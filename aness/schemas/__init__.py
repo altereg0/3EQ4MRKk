@@ -9,16 +9,19 @@ from marshmallow.validate import Range
 
 from aness.db.models import Users, Adverts
 
-hostname = 'etagy.retla.net'
-
 
 class IndexSchema(Schema):
     id = fields.String(required=False)
     document_meta = fields.DocumentMeta()
+
     class Meta:
         type_ = 'index'
         strict = False
         additional = ('id',)
+        self_url = '/api/v1/{id}'
+        self_url_kwargs = {'id': '<id>'}
+        self_url_many = '/api/index'
+
 
 class UserSchema(Schema):
     id = fields.Integer(dump_only=True)
@@ -29,6 +32,8 @@ class UserSchema(Schema):
     class Meta:
         type_ = 'user'
         strict = False
+        self_url = '/api/v1/users/{id}'
+        self_url_kwargs = {'id': '<id>'}
 
     @post_load
     def make_user(self, data):
@@ -86,7 +91,7 @@ class AdvertSchema(Schema):
     description = fields.String()
     author = fields.Relationship(schema=UserSchema,
                                  type_='user',
-                                 related_url='/users/{author_id}',
+                                 related_url='/api/v1/users/{author_id}',
                                  related_url_kwargs={'author_id': '<author.id>'},
                                  include_resource_linkage=False)
     # timestamp = TimeStampConvertedField()

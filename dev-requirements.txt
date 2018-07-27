@@ -1,3 +1,5 @@
+sphinx
 tox
+nose
 uwsgi
 -r test-requirements.txt

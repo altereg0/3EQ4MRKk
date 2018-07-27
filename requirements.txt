@@ -1,11 +1,11 @@
-nose
-sphinx
-pyjwt
+gunicorn
 falcon
 falcon-cors
 marshmallow
 marshmallow_jsonapi
 peewee
-tox
 aumbry[yaml]
+pyjwt
 docopt
+mimesis
+mimesis_factory

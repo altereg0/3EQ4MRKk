@@ -80,6 +80,7 @@ class AlterService(falcon.API):
 
         # self.db.connect(reuse_if_open=True)
 
+
     def add_route(self, uri_template, resource, *args, **kwargs):
         _url = generate_path('api', self.cfg.api_version, uri_template)
         super(AlterService, self).add_route(_url, resource, *args, **kwargs)

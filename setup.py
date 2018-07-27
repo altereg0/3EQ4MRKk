@@ -17,19 +17,22 @@ KEYWORDS = "falcon peewee oauth"
 # What packages are required for this module to be executed?
 REQUIRED = [
     'falcon',
-    'gunicorn>=19.6.0',
-    'docopt>=0.6.2',
+    'falcon-cors',
+    'gunicorn',
+    'docopt',
     'peewee',
-    'aumbry[yaml]>=0.7.0',
+    'aumbry[yaml]',
     'marshmallow',
     'marshmallow-jsonapi',
-    'pyjwt'
+    'pyjwt',
+    'mimesis',
+    'mimesis_factory'
 ]
 
 # What packages are optional?
 EXTRAS = {
     # 'fancy feature': ['django'],
-    # 'fancy feature': ['aumbry[cli]'],
+    'fancy feature': ['mimesis', 'mimesis_factory'],
 }
 
 # The rest you shouldn't have to touch too much :)

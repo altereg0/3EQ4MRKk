@@ -8,6 +8,19 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+    @staticmethod
+    def _bootstrap(count=500, locale='ru'):
+        from mimesis import Person
+        obj = Person(locale)
+
+        for _ in range(count):
+            _new = __class__.__new__(obj)
+
+            try:
+                _new.save()
+            except IntegrityError:
+                pass
+
 
 class Users(BaseModel):
     name = CharField()
@@ -56,5 +69,6 @@ class Pages(BaseModel):
 
     # class Meta:
     #     db_table = 'pages'
+
 
 MODELS = (Categories, Adverts, Images, Pages, Users)
