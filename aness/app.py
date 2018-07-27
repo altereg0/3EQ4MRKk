@@ -74,10 +74,10 @@ class AlterService(falcon.API):
         self.add_route('adverts', adverts.AdvertsCollectionResource(dbmgr))
         self.add_route('adverts/{id}', adverts.AdvertsResource(dbmgr))
 
-        self.add_route('oauth', oauth.OAuthResource(dbmgr, cfg.social_config))
-        self.add_route('oauth/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
+        self.add_route('oauths', oauth.OAuthResource(dbmgr, cfg.social_config))
+        self.add_route('oauths/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
 
-        self.add_route('oauth/success', SuccessAdapter())
+        self.add_route('oauths/success', SuccessAdapter())
 
         self.add_route('mock', AlterMockResource(falcon.HTTP_200, json={"mischief": "managed"}))
 
