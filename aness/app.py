@@ -75,7 +75,7 @@ class AlterService(falcon.API):
         self.add_route('adverts/{id}', adverts.AdvertsResource(dbmgr))
 
         self.add_route('oauths', oauth.OAuthResource(dbmgr, cfg.social_config))
-        self.add_route('oauths/{provider}', oauth.CallbackResource(dbmgr, cfg.social_config))
+        self.add_route('oauths/{social}', oauth.CallbackResource(dbmgr, cfg.social_config))
 
         self.add_route('oauths/success', SuccessAdapter())
 
@@ -104,7 +104,7 @@ class AlterService(falcon.API):
 
     def __patch_oauth_callback_url__(self):
         for cfg in self.cfg.social_config.sites_list:
-            cfg[3]['redirect_uri'] = '/api/'.join([self.cfg.social_config.base_url, cfg[3]['redirect_uri']])
+            cfg[3]['redirect_uri'] = '/'.join([ self.cfg.social_config.base_url, 'api', self.cfg.api_version, cfg[3]['redirect_uri']])
 
 
 ### asd

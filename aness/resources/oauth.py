@@ -53,7 +53,7 @@ class OAuthResource(OAuthBaseResource):
 
 
 class CallbackResource(OAuthBaseResource):
-    def on_get(self, req, resp, provider):
+    def on_get(self, req, resp, social):
         code = req.params.get('code')
         if not code:
             # error occurred
@@ -66,7 +66,7 @@ class CallbackResource(OAuthBaseResource):
                                           href='http://docs.example.com/auth')
 
         socialsites = SocialSites(self.social_sites)
-        s = socialsites.get_site_object_by_name(provider)
+        s = socialsites.get_site_object_by_name(social)
         try:
             s.get_access_token(code)
         except SocialAPIError as e:
@@ -78,13 +78,13 @@ class CallbackResource(OAuthBaseResource):
                                           href='http://docs.example.com/auth')
         # Ищем пользователя
         userSchema = UserSchema(many=False)
-        user = Users.get_or_none(Users.uid == '{}'.format(s.uid), Users.social == provider)
+        user = Users.get_or_none(Users.uid == '{}'.format(s.uid), Users.social == social)
         if user is None:
             mock = {
                 'data': {
                     'type': 'user',
                     'attributes': {
-                        'provider': provider, 'name': s.name, 'uid': '{}'.format(s.uid)
+                        'social': social, 'name': s.name, 'uid': '{}'.format(s.uid)
                     }
                 }
             }

@@ -40,7 +40,7 @@
         - baidu
         - socialoauth.sites.baidu.Baidu
         - Baidu
-        - redirect_uri: http://baidu.aness.com
+        - redirect_uri: oauths/baidu
           client_id: YOUR_ID
           client_secret: YOUR SECRET
           scope:
@@ -49,7 +49,7 @@
         - github
         - socialoauth.sites.github.Github
         - Github
-        - redirect_uri: oauth/github
+        - redirect_uri: oauths/github
           client_id: 4f131f2e1304ec60d7c1
           client_secret: 0de4ac8b7319c75d10a3c40226e2b3a0caecaccd
           scope:
@@ -58,7 +58,7 @@
         - decoy
         - socialoauth.sites.decoy.Decoy
         - Decoy
-        - redirect_uri: oauth/decoy
+        - redirect_uri: oauths/decoy
           client_id: abc000000000000
           client_secret: abc0000000000000000000000
           scope:
@@ -67,7 +67,7 @@
         - mailru
         - socialoauth.sites.mailru.MailRu
         - Mail.RU
-        - redirect_uri: oauth/mailru
+        - redirect_uri: oauths/mailru
           client_id: adqwefwqerf_fake
           client_secret: cbi23gf87h2p3hf92hf39uoh29fhc9oq23h_fake
           scope:
