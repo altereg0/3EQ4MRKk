@@ -14,25 +14,6 @@ class Users(BaseModel):
     social = FixedCharField(8)
     uid = CharField(16)
 
-    # class Meta:
-    #     db_table = 'users'
-    @staticmethod
-    def _bootstrap(locale='ru'):
-        from mimesis import Generic
-        gmock = Generic(locale)
-        gmocku = Generic('en')
-
-        _new = Users(
-            uid=gmock.cryptographic.token()[:16],
-            name=gmock.person.full_name(),
-            social=gmocku.text.color().upper()
-        )
-        try:
-            _new.save()
-        except IntegrityError as e:
-            pass
-
-
 class Categories(BaseModel):
     name = TextField(null=True)
     parent = ForeignKeyField('self', db_column='parent_id', rel_model='self', to_field='id', null=True)

@@ -8,9 +8,9 @@ class AdvancedTestSuite(app.AppTestCase):
     def setUp(self):
         super(AdvancedTestSuite, self).setUp()
         self.num_accounts = 50
-        self.num_adverts = 500
+        self.num_adverts = 8
 
-        FuckingFactory.generate_mock_data(num_users=self.num_accounts, num_adverts=self.num_adverts)
+        FuckingFactory.generate_mock_data(num_users=self.num_accounts, num_max_adverts_per_user=self.num_adverts)
 
     def test_mock_data(self):
         get_req = self.get('users')
